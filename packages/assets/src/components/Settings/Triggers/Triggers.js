@@ -1,37 +1,40 @@
 import {Select, TextField} from '@shopify/polaris';
-import React, {useState} from 'react';
+import React from 'react';
 const options = ['All pages', 'Specific pages'];
+import PropTypes from 'prop-types';
 
-export default function Triggers() {
-  const [selected, setSelected] = useState('All pages');
-  const [includedPages, setIncludedPages] = useState('');
-  const [excludedPages, setExcludedPages] = useState('');
+export default function Triggers({displaySettings, setSettings}) {
   return (
     <>
       <Select
         label="PAGES RESTRICTION"
         options={options.map(option => ({value: option, label: option}))}
         onChange={val => {
-          setSelected(val);
+          setSettings(val, 'pagesRestriction');
         }}
-        value={selected}
+        value={displaySettings.pagesRestriction}
       />
-      {selected === 'Specific pages' && (
+      {displaySettings.pagesRestriction === 'Specific pages' && (
         <TextField
-          label="Include pages"
+          label="Included pages"
           helpText="Page URLs NOT to show the pop-up (seperated by new lines)"
           multiline={3}
-          onChange={val => setIncludedPages(val)}
-          value={includedPages}
+          onChange={val => setSettings(val, 'includedPages')}
+          value={displaySettings.includedPages}
         />
       )}
       <TextField
-        label="Exclude pages"
+        label="Excluded pages"
         helpText="Page URLs NOT to show the pop-up (seperated by new lines)"
         multiline={3}
-        onChange={val => setExcludedPages(val)}
-        value={excludedPages}
+        onChange={val => setSettings(val, 'excludedPages')}
+        value={displaySettings.excludedPages}
       />
     </>
   );
 }
+
+Triggers.propTypes = {
+  displaySettings: PropTypes.object,
+  setSettings: PropTypes.func
+};
