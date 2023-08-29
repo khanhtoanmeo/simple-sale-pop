@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Layout, Page, SettingToggle, TextStyle} from '@shopify/polaris';
-import {useStore} from '@assets/reducers/storeReducer';
 
 /**
  * Render a home page for overview
@@ -10,7 +9,6 @@ import {useStore} from '@assets/reducers/storeReducer';
  */
 export default function Home() {
   const [enabled, setEnabled] = useState(false);
-  const {dispatch} = useStore();
 
   return (
     <Page title="Dashboard">
