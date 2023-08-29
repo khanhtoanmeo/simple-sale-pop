@@ -31,12 +31,12 @@ const NotificationPopup = ({
                 <span className="uni-blue">
                   <i className="fa fa-check" aria-hidden="true" /> by Avada
                 </span>
-                <CancelSmallMinor className="Avada-SP__Cancel" />
               </div>
             </div>
           </a>
         </div>
       </div>
+      <div className="Avada-SP__Cancel" />
     </div>
   );
 };

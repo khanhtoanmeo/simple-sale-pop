@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {TextField, RangeSlider} from '@shopify/polaris';
 import './Sliders.scss';
+import * as PropTypes from 'prop-types';
+
 export default function Slider({max, unit, label, helpText}) {
   const [rangeValue, setRangeValue] = useState(0);
 
@@ -9,7 +11,6 @@ export default function Slider({max, unit, label, helpText}) {
       <RangeSlider
         value={rangeValue}
         onChange={val => {
-          console.log(val, typeof val);
           setRangeValue(val);
         }}
         label={label}
@@ -25,3 +26,10 @@ export default function Slider({max, unit, label, helpText}) {
     </div>
   );
 }
+
+Slider.propTypes = {
+  max: PropTypes.number,
+  unit: PropTypes.string,
+  label: PropTypes.string,
+  helpText: PropTypes.string
+};
