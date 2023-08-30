@@ -4,8 +4,6 @@ import DesktopPositionInput from '../../DesktopPositionInput/DesktopPositionInpu
 import PropTypes from 'prop-types';
 import Sliders from '../../Sliders/Sliders';
 
-import './Display.scss';
-
 export default function Display({displaySettings, setSettings}) {
   return (
     <>

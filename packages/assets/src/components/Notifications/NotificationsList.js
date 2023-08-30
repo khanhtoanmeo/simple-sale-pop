@@ -11,8 +11,8 @@ export default function NotificationsList() {
         resourceName={{singular: 'notification', plural: 'notifications'}}
         promotedBulkActions={[
           {
-            title: 'Chill',
-            actions: [{content: 'haha'}, {content: 'hihi'}]
+            title: 'actions',
+            actions: [{content: 'Delete', destructive: true}]
           }
         ]}
         sortOptions={[{label: 'Newest update'}]}

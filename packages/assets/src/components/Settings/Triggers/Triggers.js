@@ -17,7 +17,7 @@ export default function Triggers({displaySettings, setSettings}) {
       {displaySettings.pagesRestriction === 'Specific pages' && (
         <TextField
           label="Included pages"
-          helpText="Page URLs NOT to show the pop-up (seperated by new lines)"
+          helpText="Page URLs to show the pop-up (seperated by new lines)"
           multiline={3}
           onChange={val => setSettings(val, 'includedPages')}
           value={displaySettings.includedPages}
