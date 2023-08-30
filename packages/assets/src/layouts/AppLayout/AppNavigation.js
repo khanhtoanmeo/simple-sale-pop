@@ -55,7 +55,7 @@ export default function AppNavigation() {
           {
             url: '/',
             icon: HomeMajor,
-            label: 'Dashboard',
+            label: 'Home',
             selected: location.pathname === getUrl('/'),
             onClick: () => {
               history.push('/');

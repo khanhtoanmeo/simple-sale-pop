@@ -1,36 +1,36 @@
-import {Select, TextField} from '@shopify/polaris';
+import {FormLayout, Select, TextField} from '@shopify/polaris';
 import React from 'react';
 const options = ['All pages', 'Specific pages'];
 import PropTypes from 'prop-types';
 
 export default function Triggers({displaySettings, setSettings}) {
   return (
-    <>
+    <FormLayout>
       <Select
         label="PAGES RESTRICTION"
         options={options.map(option => ({value: option, label: option}))}
         onChange={val => {
-          setSettings(val, 'pagesRestriction');
+          setSettings(val, 'allowShow');
         }}
-        value={displaySettings.pagesRestriction}
+        value={displaySettings.allowShow}
       />
-      {displaySettings.pagesRestriction === 'Specific pages' && (
+      {displaySettings.allowShow === 'Specific pages' && (
         <TextField
           label="Included pages"
           helpText="Page URLs to show the pop-up (seperated by new lines)"
           multiline={3}
-          onChange={val => setSettings(val, 'includedPages')}
-          value={displaySettings.includedPages}
+          onChange={val => setSettings(val, 'includedUrls')}
+          value={displaySettings.includedUrls}
         />
       )}
       <TextField
         label="Excluded pages"
         helpText="Page URLs NOT to show the pop-up (seperated by new lines)"
         multiline={3}
-        onChange={val => setSettings(val, 'excludedPages')}
-        value={displaySettings.excludedPages}
+        onChange={val => setSettings(val, 'excludedUrls')}
+        value={displaySettings.excludedUrls}
       />
-    </>
+    </FormLayout>
   );
 }
 

@@ -11,7 +11,7 @@ export default function Home() {
   const [enabled, setEnabled] = useState(false);
 
   return (
-    <Page title="Dashboard">
+    <Page title="Home">
       <Layout>
         <Layout.Section>
           <SettingToggle
@@ -23,7 +23,10 @@ export default function Home() {
             }}
             enabled={enabled}
           >
-            <TextStyle>Our app is {enabled ? 'enabled' : 'disabled'} on your store</TextStyle>
+            <TextStyle>
+              App status is{' '}
+              <TextStyle variation="strong">{enabled ? 'enabled' : 'disabled'}</TextStyle>
+            </TextStyle>
           </SettingToggle>
         </Layout.Section>
       </Layout>

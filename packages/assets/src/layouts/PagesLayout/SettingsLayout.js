@@ -12,26 +12,30 @@ export default function SettingsLayout({displaySettings, setSettings}) {
   const [selected, setSelected] = useState(0);
 
   return (
-    <Stack>
-      <NotificationPopup />
-      <Card>
-        <Tabs
-          selected={selected}
-          onSelect={setSelected}
-          tabs={[
-            {content: 'Display', id: 'display'},
-            {content: 'Triggers', id: 'triggers'}
-          ]}
-        >
-          <div className="Avada-SettingTab__Wrapper">
-            {tabsOrder[selected] === 'display' ? (
-              <Display displaySettings={displaySettings} setSettings={setSettings} />
-            ) : (
-              <Triggers displaySettings={displaySettings} setSettings={setSettings} />
-            )}
-          </div>
-        </Tabs>
-      </Card>
+    <Stack distribution="equalSpacing">
+      <Stack.Item>
+        <NotificationPopup />
+      </Stack.Item>
+      <Stack.Item>
+        <Card>
+          <Tabs
+            selected={selected}
+            onSelect={setSelected}
+            tabs={[
+              {content: 'Display', id: 'display'},
+              {content: 'Triggers', id: 'triggers'}
+            ]}
+          >
+            <div className="Avada-SettingTab__Wrapper">
+              {tabsOrder[selected] === 'display' ? (
+                <Display displaySettings={displaySettings} setSettings={setSettings} />
+              ) : (
+                <Triggers displaySettings={displaySettings} setSettings={setSettings} />
+              )}
+            </div>
+          </Tabs>
+        </Card>
+      </Stack.Item>
     </Stack>
   );
 }

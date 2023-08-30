@@ -1,6 +1,5 @@
 import React from 'react';
 import './NoticationPopup.scss';
-import {CancelSmallMinor} from '@shopify/polaris-icons';
 
 const NotificationPopup = ({
   firstName = 'John Doe',
@@ -25,11 +24,15 @@ const NotificationPopup = ({
               <div className={'Avada-SP__Title'}>
                 {firstName} in {city}, {country}
               </div>
-              <div className={'Avada-SP__Subtitle'}>purchased {productName}</div>
+              <div className={'Avada-SP__Subtitle'}>Purchased {productName}</div>
               <div className={'Avada-SP__Footer'}>
                 {timestamp}{' '}
                 <span className="uni-blue">
-                  <i className="fa fa-check" aria-hidden="true" /> by Avada
+                  <img
+                    className="Avada-SP__CheckIcon"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Blue_check.svg/2048px-Blue_check.svg.png"
+                  />
+                  by Avada
                 </span>
               </div>
             </div>

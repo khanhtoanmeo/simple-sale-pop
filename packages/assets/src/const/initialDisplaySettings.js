@@ -1,12 +1,12 @@
 export const initialDisplaySettings = {
-  desktopPosition: 'Bottom left',
-  truncateTextChecked: false,
-  hideTimeChecked: false,
-  duration: 0,
-  delayTime: 0,
-  gapTime: 0,
-  maxPopups: 0,
-  pagesRestriction: '',
-  includedPages: '',
-  excludedPages: ''
+  position: 'Bottom left',
+  truncateProductName: true,
+  hideTimeAgo: false,
+  displayDuration: 5,
+  firstDelay: 10,
+  popsInterval: 2,
+  maxPopsDisplay: 20,
+  allowShow: '',
+  includedUrls: '',
+  excludedUrls: ''
 };
