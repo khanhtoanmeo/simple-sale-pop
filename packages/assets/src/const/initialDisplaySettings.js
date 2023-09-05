@@ -1,5 +1,5 @@
 export const initialDisplaySettings = {
-  position: 'Bottom left',
+  position: 'bottom-left',
   truncateProductName: true,
   hideTimeAgo: false,
   displayDuration: 5,

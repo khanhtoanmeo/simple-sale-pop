@@ -11,6 +11,7 @@ import React, {useState} from 'react';
 import './Notifications.scss';
 import {DUMMYDATA} from '../../const/dummyData';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
+
 const months = [
   'January',
   'February',
@@ -25,6 +26,7 @@ const months = [
   'November',
   'December'
 ];
+
 export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
 
