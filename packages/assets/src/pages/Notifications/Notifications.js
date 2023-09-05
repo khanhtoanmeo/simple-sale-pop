@@ -5,35 +5,32 @@ import {
   Card,
   ResourceList,
   TextStyle,
-  Stack
+  Stack,
+  EmptyState
 } from '@shopify/polaris';
 import React, {useState} from 'react';
 import './Notifications.scss';
 import {DUMMYDATA} from '../../const/dummyData';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
+import useFetchApi from '../../hooks/api/useFetchApi';
+import {formatDateMonthOnly} from '../../helpers/utils/formatFullTime';
 
 export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
+  const {loading} = useFetchApi({url: '/notifications'});
+
+  const emptyStateMarkup = (
+    <EmptyState>
+      <TextStyle>No notifications yet</TextStyle>
+    </EmptyState>
+  );
 
   return (
     <Page title="Notifications" subtitle="List of sales notifications from shopify" fullWidth>
       <Card>
         <ResourceList
+          // loading={loading}
+          emptyState={emptyStateMarkup}
           resourceName={{singular: 'notification', plural: 'notifications'}}
           promotedBulkActions={[
             {
@@ -48,9 +45,7 @@ export default function Notifications() {
               <Stack distribution="equalSpacing">
                 <NotificationPopup firstName={firstName} />
                 <Stack vertical spacing="extraTight">
-                  <TextStyle variation="strong">{`From ${
-                    months[date.getMonth()]
-                  } ${date.getDate()},`}</TextStyle>
+                  <TextStyle variation="strong">{`From ${formatDateMonthOnly(date)},`}</TextStyle>
                   <TextStyle variation="strong">{`${date.getFullYear()}`}</TextStyle>
                 </Stack>
               </Stack>

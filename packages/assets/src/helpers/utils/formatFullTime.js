@@ -25,6 +25,14 @@ export function formatDateOnly(datetime = new Date(), timeZone = '') {
   return fullMonthList[result.getMonth()] + ' ' + result.getDate() + ', ' + result.getFullYear();
 }
 
+export function formatDateMonthOnly(datetime = new Date(), timeZone = '') {
+  let result = new Date(datetime);
+  if (timeZone !== '') {
+    result = new Date(result.toLocaleString('en-US', {timeZone}));
+  }
+  return `${fullMonthList[result.getMonth()]} ${result.getDate()}`;
+}
+
 export function formatDateRaw(datetime = new Date(), timeZone = '') {
   let result = new Date(datetime);
   if (timeZone !== '') {
