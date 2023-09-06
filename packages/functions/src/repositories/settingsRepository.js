@@ -17,3 +17,9 @@ export async function updateSetting(shopID, setting) {
 
   return true;
 }
+
+export async function createSetting(setting) {
+  const docRef = await collection.add(setting);
+
+  return {setting, id: docRef.id};
+}

@@ -13,6 +13,7 @@ import React, {useState} from 'react';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
 import useFetchApi from '../../hooks/api/useFetchApi';
 import {formatDateMonthOnly} from '../../helpers/utils/formatFullTime';
+import {getTimeAgo} from '../../helpers/utils/getTimeAgo';
 
 export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -27,44 +28,46 @@ export default function Notifications() {
     </Card>
   );
 
+  const resourceListMarkup = (
+    <ResourceList
+      loading={loading}
+      emptyState={emptyStateMarkup}
+      resourceName={{singular: 'notification', plural: 'notifications'}}
+      promotedBulkActions={[
+        {
+          title: 'actions',
+          actions: [{content: 'Delete', destructive: true}]
+        }
+      ]}
+      sortOptions={[{label: 'Newest update'}]}
+      items={data}
+      renderItem={data => {
+        const timestampMS = data.timestamp._seconds * 1000;
+        const date = new Date(timestampMS);
+
+        return (
+          <ResourceItem id={data.id} key={data.firstName} persistActions>
+            <Stack distribution="equalSpacing">
+              <NotificationPopup {...data} timestamp={getTimeAgo(timestampMS)} />
+              <Stack vertical spacing="extraTight" alignment="trailing">
+                <TextStyle variation="strong">{`From ${formatDateMonthOnly(date)},`}</TextStyle>
+                <TextStyle variation="strong">{`${date.getFullYear()}`}</TextStyle>
+              </Stack>
+            </Stack>
+          </ResourceItem>
+        );
+      }}
+      selectable
+      selectedItems={selectedItems}
+      onSelectionChange={setSelectedItems}
+    />
+  );
+
   return (
     <Page title="Notifications" subtitle="List of sales notifications from shopify" fullWidth>
       <Layout>
         <Layout.Section>
-          <Card>
-            <ResourceList
-              loading={loading}
-              emptyState={emptyStateMarkup}
-              resourceName={{singular: 'notification', plural: 'notifications'}}
-              promotedBulkActions={[
-                {
-                  title: 'actions',
-                  actions: [{content: 'Delete', destructive: true}]
-                }
-              ]}
-              sortOptions={[{label: 'Newest update'}]}
-              items={data}
-              renderItem={({id, firstName, timestamp}) => {
-                const date = new Date(timestamp._seconds * 10 ** 3);
-                return (
-                  <ResourceItem id={id} key={firstName} persistActions>
-                    <Stack distribution="equalSpacing">
-                      <NotificationPopup firstName={firstName} />
-                      <Stack vertical spacing="extraTight" alignment="trailing">
-                        <TextStyle variation="strong">{`From ${formatDateMonthOnly(
-                          date
-                        )},`}</TextStyle>
-                        <TextStyle variation="strong">{`${date.getFullYear()}`}</TextStyle>
-                      </Stack>
-                    </Stack>
-                  </ResourceItem>
-                );
-              }}
-              selectable
-              selectedItems={selectedItems}
-              onSelectionChange={setSelectedItems}
-            />
-          </Card>
+          <Card>{resourceListMarkup}</Card>
         </Layout.Section>
         <Layout.Section>
           <Stack distribution="center">

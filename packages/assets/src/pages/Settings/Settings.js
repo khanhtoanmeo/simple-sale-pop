@@ -76,13 +76,7 @@ export default function Settings() {
           <Card.Section>
             <FormLayout>
               <SkeletonDisplayText size="small" />
-              <Stack distribution="equalSpacing">
-                <SkeletonThumbnail size="large" />
-                <SkeletonThumbnail size="large" />
-                <SkeletonThumbnail size="large" />
-                <SkeletonThumbnail size="large" />
-              </Stack>
-              <SkeletonBodyText lines={3} />
+              <SkeletonBodyText lines={5} />
             </FormLayout>
           </Card.Section>
           <Card.Section>
