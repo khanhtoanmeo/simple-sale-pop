@@ -24,8 +24,6 @@ export async function update(ctx) {
   try {
     const shopID = getCurrentShop(ctx);
     const {data: newSettings} = ctx.req.body;
-    console.log('new setting :::::  ', newSettings);
-    console.log('shopID :::::  ', shopID);
 
     await updateSetting(shopID, newSettings);
 

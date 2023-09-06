@@ -14,4 +14,6 @@ export async function getSetting(shopID) {
 export async function updateSetting(shopID, setting) {
   const snapshot = await collection.where('shopId', '==', shopID).get();
   await snapshot.docs[0].ref.update(setting);
+
+  return true;
 }
