@@ -1,38 +1,65 @@
 import React from 'react';
-import {TextStyle, Stack, Checkbox, FormLayout} from '@shopify/polaris';
+import {Checkbox, FormLayout, Card, RangeSlider, TextField} from '@shopify/polaris';
 import DesktopPositionInput from '../../DesktopPositionInput/DesktopPositionInput';
 import PropTypes from 'prop-types';
-import Sliders from '../../Sliders/Sliders';
+import {firstSlidersGroup, secondSlidersGroup} from '../../../const/slidersInfo';
+import './Display.scss';
 
 export default function Display({displaySettings, setSettings}) {
-  return (
-    <FormLayout>
-      <TextStyle variation="strong">APPEARANCE</TextStyle>
-      <DesktopPositionInput
-        label={'Desktop position'}
-        value={displaySettings.position}
-        onChange={val => setSettings(val, 'position')}
-        helpText={'The display position of the pop on your website'}
+  function mapSlidersGroup(sliderGroup) {
+    return sliderGroup.map(({name, unit, label, helpText, max}) => (
+      <RangeSlider
+        key={name}
+        value={displaySettings[name]}
+        onChange={val => {
+          setSettings(name, val);
+        }}
+        label={label}
+        min={0}
+        max={max}
+        helpText={helpText}
+        suffix={
+          <div className="Avada-Slider__TextField">
+            <TextField suffix={unit + '(s)'} value={`${displaySettings[name]}`} disabled />
+          </div>
+        }
       />
-      <Stack vertical>
-        <Checkbox
-          onChange={val => setSettings(val, 'hideTimeAgo')}
-          checked={displaySettings.hideTimeAgo}
-          label="Hide time ago"
-          name="hideTime"
-        />
-        <Checkbox
-          onChange={val => setSettings(val, 'truncateProductName')}
-          checked={displaySettings.truncateProductName}
-          label="Truncate content text"
-          name="truncateText"
-          helpText='If your product name is long for one line, it will be truncated to "Product na..."'
-        />
-      </Stack>
+    ));
+  }
 
-      <TextStyle variation="strong">TIMING</TextStyle>
-      <Sliders displaySettings={displaySettings} setSettings={setSettings} />
-    </FormLayout>
+  return (
+    <>
+      <Card.Section title="Appearance">
+        <FormLayout>
+          <DesktopPositionInput
+            label={'Desktop position'}
+            value={displaySettings.position}
+            onChange={val => setSettings('position', val)}
+            helpText={'The display position of the pop on your website'}
+          />
+          <Checkbox
+            onChange={val => setSettings('hideTimeAgo', val)}
+            checked={displaySettings.hideTimeAgo}
+            label="Hide time ago"
+            name="hideTimeAgo"
+          />
+          <Checkbox
+            onChange={val => setSettings('truncateProductName', val)}
+            checked={displaySettings.truncateProductName}
+            label="Truncate content text"
+            name="truncateProductName"
+            helpText='If your product name is long for one line, it will be truncated to "Product na..."'
+          />
+        </FormLayout>
+      </Card.Section>
+      <Card.Section title="Timing">
+        <FormLayout>
+          <FormLayout.Group>{mapSlidersGroup(firstSlidersGroup)}</FormLayout.Group>
+
+          <FormLayout.Group>{mapSlidersGroup(secondSlidersGroup)}</FormLayout.Group>
+        </FormLayout>
+      </Card.Section>
+    </>
   );
 }
 

@@ -106,3 +106,13 @@
   margin-right: 6px;
   padding-top: 2px;
 }
+
+.Avada-SP__TruncateText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Avada-SP__HideTimeAgo {
+  visibility: hidden;
+}

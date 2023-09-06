@@ -1,4 +1,4 @@
-export const slidersInfo = [
+export const firstSlidersGroup = [
   {
     name: 'displayDuration',
     unit: 'second',
@@ -12,7 +12,10 @@ export const slidersInfo = [
     label: 'Time before the first pop',
     helpText: 'The delay time before the first notification',
     max: 100
-  },
+  }
+];
+
+export const secondSlidersGroup = [
   {
     name: 'popsInterval',
     unit: 'second',

@@ -7,7 +7,9 @@ const NotificationPopup = ({
   country = 'United States',
   productName = 'Puffer Jacket With Hidden Hood',
   timestamp = 'a day ago',
-  productImage = 'https://boostsales.apps.avada.io/42b7c27ec4d0b67163b3d2adc1f1221e.png'
+  productImage = 'https://boostsales.apps.avada.io/42b7c27ec4d0b67163b3d2adc1f1221e.png',
+  truncated = false,
+  hideTimeAgo = false
 }) => {
   return (
     <div className="Avava-SP__Wrapper fadeInUp animated">
@@ -24,9 +26,11 @@ const NotificationPopup = ({
               <div className={'Avada-SP__Title'}>
                 {firstName} in {city}, {country}
               </div>
-              <div className={'Avada-SP__Subtitle'}>Purchased {productName}</div>
+              <div className={`Avada-SP__Subtitle ${truncated && 'Avada-SP__TruncateText'}`}>
+                Purchased {productName}
+              </div>
               <div className={'Avada-SP__Footer'}>
-                {timestamp}{' '}
+                <span className={`${hideTimeAgo && 'Avada-SP__HideTimeAgo'}`}>{timestamp}</span>
                 <span className="uni-blue">
                   <img
                     className="Avada-SP__CheckIcon"

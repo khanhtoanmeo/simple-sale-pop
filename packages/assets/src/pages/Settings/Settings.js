@@ -1,59 +1,134 @@
 import React, {useState} from 'react';
-import {Page, Card, Stack, Tabs} from '@shopify/polaris';
+import {
+  Page,
+  Card,
+  Tabs,
+  Layout,
+  SkeletonBodyText,
+  SkeletonDisplayText,
+  TextContainer,
+  SkeletonThumbnail,
+  FormLayout,
+  Stack
+} from '@shopify/polaris';
 import {initialDisplaySettings} from '../../const/initialDisplaySettings';
 import Display from '../../components/Settings/Display/Display';
 import Triggers from '../../components/Settings/Triggers/Triggers';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
 import './Settings.scss';
 import useFetchApi from '../../hooks/api/useFetchApi';
-
-const tabs = [
-  {content: 'Display', id: 'display'},
-  {content: 'Triggers', id: 'triggers'}
-];
+import useEditApi from '../../hooks/api/useEditApi';
 
 /**
  * @return {JSX.Element}
  */
 
 export default function Settings() {
-  const [displaySettings, setDisplaySettings] = useState(initialDisplaySettings);
+  const {loading, data: displaySettings, setData: setDisplaySettings} = useFetchApi({
+    url: '/settings',
+    defaultData: initialDisplaySettings
+  });
+  const {editing, handleEdit} = useEditApi({url: '/settings', defaultState: false});
   const [selected, setSelected] = useState(0);
 
-  const {loading} = useFetchApi({url: '/settings'});
-
-  function setSettings(val, name) {
-    setDisplaySettings(prev => ({
-      ...prev,
-      [name]: val
-    }));
+  function setSettings(key, val) {
+    setDisplaySettings(prev => ({...prev, [key]: val}));
+  }
+  async function onSave() {
+    const dataBack = await handleEdit(displaySettings);
+    console.log(dataBack);
   }
 
-  function onSave() {
-    console.log(displaySettings);
-  }
+  const tabs = [
+    {
+      content: 'Display',
+      id: 'display',
+      bodyContent: <Display displaySettings={displaySettings} setSettings={setSettings} />
+    },
+    {
+      content: 'Triggers',
+      id: 'triggers',
+      bodyContent: <Triggers displaySettings={displaySettings} setSettings={setSettings} />
+    }
+  ];
+
+  const pageSkeletonMarkup = (
+    <Layout>
+      <Layout.Section secondary>
+        <Card sectioned>
+          <FormLayout>
+            <Stack>
+              <SkeletonThumbnail />
+              <Stack.Item fill>
+                <SkeletonBodyText />
+              </Stack.Item>
+            </Stack>
+          </FormLayout>
+        </Card>
+      </Layout.Section>
+      <Layout.Section>
+        <Card>
+          <Card.Section>
+            <TextContainer>
+              <SkeletonDisplayText size="small" />
+            </TextContainer>
+          </Card.Section>
+          <Card.Section>
+            <FormLayout>
+              <SkeletonDisplayText size="small" />
+              <Stack distribution="equalSpacing">
+                <SkeletonThumbnail size="large" />
+                <SkeletonThumbnail size="large" />
+                <SkeletonThumbnail size="large" />
+                <SkeletonThumbnail size="large" />
+              </Stack>
+              <SkeletonBodyText lines={3} />
+            </FormLayout>
+          </Card.Section>
+          <Card.Section>
+            <FormLayout>
+              <SkeletonDisplayText size="small" />
+              <FormLayout.Group>
+                <SkeletonBodyText />
+                <SkeletonBodyText />
+              </FormLayout.Group>
+              <FormLayout.Group>
+                <SkeletonBodyText />
+                <SkeletonBodyText />
+              </FormLayout.Group>
+            </FormLayout>
+          </Card.Section>
+        </Card>
+      </Layout.Section>
+    </Layout>
+  );
+
+  const actualPageMarkup = (
+    <Layout>
+      <Layout.Section oneThird>
+        <NotificationPopup
+          truncated={displaySettings.truncateProductName}
+          hideTimeAgo={displaySettings.hideTimeAgo}
+        />
+      </Layout.Section>
+      <Layout.Section>
+        <Card>
+          <Tabs selected={selected} onSelect={setSelected} tabs={tabs}>
+            {tabs[selected].bodyContent}
+          </Tabs>
+        </Card>
+      </Layout.Section>
+    </Layout>
+  );
 
   return (
     <Page
       title="Settings"
       fullWidth
       subtitle="Decide how your notifications will display"
-      primaryAction={{content: 'Save', onAction: onSave}}
+      primaryAction={{content: 'Save', onAction: onSave, loading: editing}}
     >
-      <Stack distribution="equalSpacing">
-        <NotificationPopup />
-        <Card>
-          <Tabs selected={selected} onSelect={setSelected} tabs={tabs}>
-            <div className="Avada-SettingTab__Wrapper">
-              {tabs[selected].id === 'display' ? (
-                <Display displaySettings={displaySettings} setSettings={setSettings} />
-              ) : (
-                <Triggers displaySettings={displaySettings} setSettings={setSettings} />
-              )}
-            </div>
-          </Tabs>
-        </Card>
-      </Stack>
+      {loading ? pageSkeletonMarkup : actualPageMarkup}
     </Page>
   );
 }

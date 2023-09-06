@@ -9,5 +9,5 @@ export default function useInput(defaultState = null) {
 
   const handleInputChange = (key, value) => setInput(prev => ({...prev, [key]: value}));
 
-  return [input, handleInputChange, setInput];
+  return {input, handleInputChange, setInput};
 }
