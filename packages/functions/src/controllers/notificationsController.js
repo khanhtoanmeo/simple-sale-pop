@@ -6,7 +6,6 @@ export async function getList(ctx) {
     const shopID = getCurrentShop(ctx);
     const notifications = await getNotifications(shopID);
 
-    ctx.status = 200;
     ctx.body = {
       data: notifications,
       success: true

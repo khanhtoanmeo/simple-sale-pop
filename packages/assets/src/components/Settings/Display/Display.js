@@ -5,28 +5,7 @@ import PropTypes from 'prop-types';
 import {firstSlidersGroup, secondSlidersGroup} from '../../../const/slidersInfo';
 import './Display.scss';
 
-export default function Display({displaySettings, setSettings}) {
-  function mapSlidersGroup(sliderGroup) {
-    return sliderGroup.map(({name, unit, label, helpText, max}) => (
-      <RangeSlider
-        key={name}
-        value={displaySettings[name]}
-        onChange={val => {
-          setSettings(name, val);
-        }}
-        label={label}
-        min={0}
-        max={max}
-        helpText={helpText}
-        suffix={
-          <div className="Avada-Slider__TextField">
-            <TextField suffix={unit + '(s)'} value={`${displaySettings[name]}`} disabled />
-          </div>
-        }
-      />
-    ));
-  }
-
+export default function Display({displaySettings, onInputChange}) {
   return (
     <>
       <Card.Section title="Appearance">
@@ -34,17 +13,17 @@ export default function Display({displaySettings, setSettings}) {
           <DesktopPositionInput
             label={'Desktop position'}
             value={displaySettings.position}
-            onChange={val => setSettings('position', val)}
+            onChange={val => onInputChange('position', val)}
             helpText={'The display position of the pop on your website'}
           />
           <Checkbox
-            onChange={val => setSettings('hideTimeAgo', val)}
+            onChange={val => onInputChange('hideTimeAgo', val)}
             checked={displaySettings.hideTimeAgo}
             label="Hide time ago"
             name="hideTimeAgo"
           />
           <Checkbox
-            onChange={val => setSettings('truncateProductName', val)}
+            onChange={val => onInputChange('truncateProductName', val)}
             checked={displaySettings.truncateProductName}
             label="Truncate content text"
             name="truncateProductName"
@@ -54,9 +33,46 @@ export default function Display({displaySettings, setSettings}) {
       </Card.Section>
       <Card.Section title="Timing">
         <FormLayout>
-          <FormLayout.Group>{mapSlidersGroup(firstSlidersGroup)}</FormLayout.Group>
-
-          <FormLayout.Group>{mapSlidersGroup(secondSlidersGroup)}</FormLayout.Group>
+          <FormLayout.Group>
+            {firstSlidersGroup.map(({name, unit, label, helpText, max}) => (
+              <RangeSlider
+                key={name}
+                value={displaySettings[name]}
+                onChange={val => {
+                  onInputChange(name, val);
+                }}
+                label={label}
+                min={0}
+                max={max}
+                helpText={helpText}
+                suffix={
+                  <div className="Avada-Slider__TextField">
+                    <TextField suffix={unit + '(s)'} value={`${displaySettings[name]}`} disabled />
+                  </div>
+                }
+              />
+            ))}
+          </FormLayout.Group>
+          <FormLayout.Group>
+            {secondSlidersGroup.map(({name, unit, label, helpText, max}) => (
+              <RangeSlider
+                key={name}
+                value={displaySettings[name]}
+                onChange={val => {
+                  onInputChange(name, val);
+                }}
+                label={label}
+                min={0}
+                max={max}
+                helpText={helpText}
+                suffix={
+                  <div className="Avada-Slider__TextField">
+                    <TextField suffix={unit + '(s)'} value={`${displaySettings[name]}`} disabled />
+                  </div>
+                }
+              />
+            ))}
+          </FormLayout.Group>
         </FormLayout>
       </Card.Section>
     </>
@@ -65,5 +81,5 @@ export default function Display({displaySettings, setSettings}) {
 
 Display.propTypes = {
   displaySettings: PropTypes.object,
-  setSettings: PropTypes.func
+  onInputChange: PropTypes.func
 };

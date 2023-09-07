@@ -6,7 +6,6 @@ export async function getList(ctx) {
     const shopID = getCurrentShop(ctx);
     const settings = await getSetting(shopID);
 
-    ctx.status = 200;
     ctx.body = {
       data: settings,
       success: true
@@ -27,7 +26,6 @@ export async function update(ctx) {
 
     await updateSetting(shopID, newSettings);
 
-    ctx.status = 200;
     ctx.body = {
       success: true
     };

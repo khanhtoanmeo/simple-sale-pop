@@ -3,14 +3,14 @@ import React from 'react';
 const options = ['All pages', 'Specific pages'];
 import PropTypes from 'prop-types';
 
-export default function Triggers({displaySettings, setSettings}) {
+export default function Triggers({displaySettings, onInputChange}) {
   return (
     <Card.Section title="PAGES RESTRICTION">
       <FormLayout>
         <Select
           options={options.map(option => ({value: option, label: option}))}
           onChange={val => {
-            setSettings('allowShow', val);
+            onInputChange('allowShow', val);
           }}
           value={displaySettings.allowShow}
         />
@@ -19,7 +19,7 @@ export default function Triggers({displaySettings, setSettings}) {
             label="Included pages"
             helpText="Page URLs to show the pop-up (seperated by new lines)"
             multiline={3}
-            onChange={val => setSettings('includedUrls', val)}
+            onChange={val => onInputChange('includedUrls', val)}
             value={displaySettings.includedUrls}
           />
         )}
@@ -27,7 +27,7 @@ export default function Triggers({displaySettings, setSettings}) {
           label="Excluded pages"
           helpText="Page URLs NOT to show the pop-up (seperated by new lines)"
           multiline={3}
-          onChange={val => setSettings('excludedUrls', val)}
+          onChange={val => onInputChange('excludedUrls', val)}
           value={displaySettings.excludedUrls}
         />
       </FormLayout>
@@ -37,5 +37,5 @@ export default function Triggers({displaySettings, setSettings}) {
 
 Triggers.propTypes = {
   displaySettings: PropTypes.object,
-  setSettings: PropTypes.func
+  onInputChange: PropTypes.func
 };

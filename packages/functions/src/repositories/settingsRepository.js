@@ -7,7 +7,6 @@ const collection = firestore.collection('settings');
 
 export async function getSetting(shopID) {
   const settings = await collection.where('shopId', '==', shopID).get();
-
   return presentDoc(settings.docs[0]);
 }
 

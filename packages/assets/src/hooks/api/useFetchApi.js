@@ -26,6 +26,10 @@ export default function useFetchApi({
   const [pageInfo, setPageInfo] = useState({});
   const [count, setCount] = useState(0);
 
+  function handleInputChange(key, val) {
+    setData(prev => ({...prev, [key]: val}));
+  }
+
   async function fetchApi(apiUrl, params = null, keepPreviousData = false) {
     try {
       setLoading(true);
@@ -70,6 +74,7 @@ export default function useFetchApi({
     setCount,
     loading,
     fetched,
-    setFetched
+    setFetched,
+    handleInputChange
   };
 }
