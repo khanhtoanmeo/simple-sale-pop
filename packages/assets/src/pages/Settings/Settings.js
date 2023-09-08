@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Page, Card, Tabs, Layout} from '@shopify/polaris';
 import {initialDisplaySettings} from '../../const/initialDisplaySettings';
 import Display from '../../components/Settings/Display/Display';
@@ -9,6 +9,7 @@ import useFetchApi from '../../hooks/api/useFetchApi';
 import SettingsSkeleton from './SettingsSkeleton';
 import useEditApi from '../../hooks/api/useEditApi';
 import useTabs from '../../hooks/tab/useTabs';
+import {isValidUrls} from '../../helpers/isValidUrls';
 
 /**
  * @return {JSX.Element}
@@ -20,6 +21,8 @@ export default function Settings() {
     defaultData: initialDisplaySettings
   });
   const {editing, handleEdit} = useEditApi({url: '/settings'});
+  const [inputError, setInputError] = useState({from: '', message: ''});
+
   const tabs = [
     {
       content: 'Display',
@@ -29,14 +32,30 @@ export default function Settings() {
     {
       content: 'Triggers',
       id: 'triggers',
-      bodyContent: <Triggers displaySettings={displaySettings} onInputChange={handleInputChange} />
+      bodyContent: (
+        <Triggers
+          displaySettings={displaySettings}
+          onInputChange={handleInputChange}
+          error={inputError}
+        />
+      )
     }
   ];
   const {setSelected, activeTab, selected} = useTabs(tabs);
 
   async function onSave() {
-    const dataBack = await handleEdit(displaySettings);
-    console.log(dataBack);
+    try {
+      const {includedUrls, excludedUrls} = displaySettings;
+      if (!isValidUrls(includedUrls))
+        return setInputError({from: 'includedUrls', message: 'Included urls must be valid urls'});
+      if (!isValidUrls(excludedUrls))
+        return setInputError({from: 'excludedUrls', message: 'Excluded urls must be valid urls'});
+
+      await handleEdit(displaySettings);
+      setInputError({from: '', message: ''});
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   if (loading) return <SettingsSkeleton />;
@@ -46,7 +65,13 @@ export default function Settings() {
       title="Settings"
       fullWidth
       subtitle="Decide how your notifications will display"
-      primaryAction={{content: 'Save', onAction: onSave, loading: editing}}
+      primaryAction={{
+        content: 'Save',
+        onAction: onSave,
+        loading: editing,
+        disabled:
+          displaySettings.allowShow === 'Specific pages' && !displaySettings.includedUrls.trim()
+      }}
     >
       <Layout>
         <Layout.Section oneThird>

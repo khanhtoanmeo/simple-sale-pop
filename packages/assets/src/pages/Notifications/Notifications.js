@@ -42,7 +42,7 @@ export default function Notifications() {
         return (
           <ResourceItem id={data.id} key={data.firstName} persistActions>
             <Stack distribution="equalSpacing">
-              <NotificationPopup {...data} timestamp={getTimeAgo(date.getMilliseconds())} />
+              <NotificationPopup {...data} timestamp={getTimeAgo(date.getTime())} />
               <Stack vertical spacing="extraTight" alignment="trailing">
                 <TextStyle variation="strong">{`From ${formatDateMonthOnly(date)},`}</TextStyle>
                 <TextStyle variation="strong">{`${date.getFullYear()}`}</TextStyle>

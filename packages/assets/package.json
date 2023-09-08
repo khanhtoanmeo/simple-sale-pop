@@ -37,7 +37,8 @@
     "react-router-routes-loader": "^0.2.1",
     "react-screentype-hook": "^1.0.18",
     "rehype-raw": "^6.1.1",
-    "remark-gfm": "^3.0.1"
+    "remark-gfm": "^3.0.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
@@ -57,8 +58,8 @@
     "favicons-webpack-plugin": "^4.2.0",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^4.5.2",
-    "sass": "^1.63.6",
     "react-refresh": "^0.14.0",
+    "sass": "^1.63.6",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",

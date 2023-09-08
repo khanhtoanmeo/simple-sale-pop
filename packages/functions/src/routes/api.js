@@ -6,6 +6,7 @@ import * as appNewsController from '@functions/controllers/appNewsController';
 import * as notificationsController from '@functions/controllers/notificationsController';
 import * as settingsController from '@functions/controllers/settingsController';
 import {getApiPrefix} from '@functions/const/app';
+import {updateSettingMiddleware} from '../middleware/updateSettingMiddleware';
 
 export default function apiRouter(isEmbed = false) {
   const router = new Router({prefix: getApiPrefix(isEmbed)});
@@ -16,7 +17,7 @@ export default function apiRouter(isEmbed = false) {
   router.get('/appNews', appNewsController.getList);
   router.get('/notifications', notificationsController.getList);
   router.get('/settings', settingsController.getList);
-  router.put('/settings', settingsController.update);
+  router.put('/settings', updateSettingMiddleware, settingsController.update);
 
   return router;
 }

@@ -1,8 +1,8 @@
 import {Firestore} from '@google-cloud/firestore';
 import presentDoc from '../helpers/presentDoc';
 import Shopify from 'shopify-api-node';
-import {getLatestOrdersQueryStr} from '../const/graphqlQueries';
 import {orderToNotification} from '../helpers/orderToNotification';
+import {getLatestOrdersQueryStr} from '../helpers/graphqlQueries';
 
 const firestore = new Firestore();
 const collection = firestore.collection('notifications');

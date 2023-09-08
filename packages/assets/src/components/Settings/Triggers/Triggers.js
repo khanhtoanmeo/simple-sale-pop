@@ -3,7 +3,7 @@ import React from 'react';
 const options = ['All pages', 'Specific pages'];
 import PropTypes from 'prop-types';
 
-export default function Triggers({displaySettings, onInputChange}) {
+export default function Triggers({displaySettings, onInputChange, error}) {
   return (
     <Card.Section title="PAGES RESTRICTION">
       <FormLayout>
@@ -21,6 +21,7 @@ export default function Triggers({displaySettings, onInputChange}) {
             multiline={3}
             onChange={val => onInputChange('includedUrls', val)}
             value={displaySettings.includedUrls}
+            error={error.from === 'includedUrls' && error.message}
           />
         )}
         <TextField
@@ -29,6 +30,7 @@ export default function Triggers({displaySettings, onInputChange}) {
           multiline={3}
           onChange={val => onInputChange('excludedUrls', val)}
           value={displaySettings.excludedUrls}
+          error={error.from === 'excludedUrls' && error.message}
         />
       </FormLayout>
     </Card.Section>
@@ -37,5 +39,6 @@ export default function Triggers({displaySettings, onInputChange}) {
 
 Triggers.propTypes = {
   displaySettings: PropTypes.object,
-  onInputChange: PropTypes.func
+  onInputChange: PropTypes.func,
+  error: PropTypes.object
 };

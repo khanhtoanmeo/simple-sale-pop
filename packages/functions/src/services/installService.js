@@ -1,7 +1,7 @@
 import {syncOrdersToNotifications} from '../repositories/notificationsRepository';
 import {createSetting} from '../repositories/settingsRepository';
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
-import {initialDisplaySettings} from '../const/initialDisplaySettings';
+import {initialDisplaySettings} from '../const/displaySettings';
 
 export async function installService(ctx) {
   try {
