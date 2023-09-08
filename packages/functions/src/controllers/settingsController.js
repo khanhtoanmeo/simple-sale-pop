@@ -21,10 +21,11 @@ export async function getList(ctx) {
 
 export async function update(ctx) {
   try {
-    const shopId = getCurrentShop(ctx);
     const {data: newSettings} = ctx.req.body;
+    const {id} = ctx.params;
+    console.log('IDDDDD', id);
 
-    await updateSetting(shopId, newSettings);
+    await updateSetting(id, newSettings);
 
     return (ctx.body = {
       success: true

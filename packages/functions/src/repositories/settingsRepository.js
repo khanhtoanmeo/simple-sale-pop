@@ -6,27 +6,27 @@ const firestore = new Firestore();
 const collection = firestore.collection('settings');
 
 export async function getSetting(shopId) {
-  //todo: cái này dùng id của setting cho dễ nhé , dùng id của shop không ổn , giả dụ như có 2 setting của cùng 1 shop cho 2 phần khác nhau thì sao  thì sao 
   const snapshot = await collection.where('shopId', '==', shopId).get();
+
   return presentDoc(snapshot.docs[0]);
 }
 
-
-export async function updateSetting(shopId, setting) {
-  // todo : không dùng get dùng id của setting để update , dùng get lại tốn thên 1 lần query lên nữa
-  const snapshot = await collection.where('shopId', '==', shopId).get();
-  await snapshot.docs[0].ref.update(setting);
+export async function updateSetting(id, setting) {
+  await collection.doc(id).update(setting);
 
   return true;
 }
 
 export async function createSetting(setting) {
   const docRef = await collection.add(setting);
+
   return {setting, id: docRef.id};
 }
 
 export async function deleteSetting(shopId) {
-  // todo : đoạn này giống như đoạn trên , không dùng lại get đâu nhé 
+  // todo : đoạn này giống như đoạn trên , không dùng lại get đâu nhé
+
+  // đoạn này ở part sau em tạm thời chưa sửa mong anh thông cảm, cũng có những cái khó riêng, đến part sau ae mình cùng thảo luận về chủ đề này nhé
   const snapshot = await collection.where('shopId', '==', shopId).get();
   await snapshot.docs[0].ref.delete();
 

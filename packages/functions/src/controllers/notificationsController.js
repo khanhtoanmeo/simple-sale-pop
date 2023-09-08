@@ -3,8 +3,8 @@ import {getNotifications} from '../repositories/notificationsRepository';
 
 export async function getList(ctx) {
   try {
-    const shopID = getCurrentShop(ctx);
-    const notifications = await getNotifications(shopID);
+    const shopId = getCurrentShop(ctx);
+    const notifications = await getNotifications(shopId);
 
     return (ctx.body = {
       data: notifications,

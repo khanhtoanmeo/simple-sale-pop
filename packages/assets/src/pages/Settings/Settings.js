@@ -20,7 +20,7 @@ export default function Settings() {
     url: '/settings',
     defaultData: initialDisplaySettings
   });
-  const {editing, handleEdit} = useEditApi({url: '/settings'});
+  const {editing, handleEdit} = useEditApi({url: `/settings/${displaySettings.id}`});
   const [inputError, setInputError] = useState({from: '', message: ''});
 
   const tabs = [
