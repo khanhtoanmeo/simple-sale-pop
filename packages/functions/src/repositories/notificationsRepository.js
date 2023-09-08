@@ -24,6 +24,7 @@ export async function syncOrdersToNotifications({accessToken, shopifyDomain, sho
     collection.add(orderToNotification({node, shopId, shopifyDomain}))
   );
   await Promise.all(promises);
+  // todo: chuyển thành return {success : true} nhé ,
 
   return true;
 }
