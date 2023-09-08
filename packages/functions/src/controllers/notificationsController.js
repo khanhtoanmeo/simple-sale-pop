@@ -6,15 +6,15 @@ export async function getList(ctx) {
     const shopID = getCurrentShop(ctx);
     const notifications = await getNotifications(shopID);
 
-    ctx.body = {
+    return (ctx.body = {
       data: notifications,
       success: true
-    };
+    });
   } catch (error) {
     ctx.status = 500;
-    ctx.body = {
+    return (ctx.body = {
       success: false,
       message: error.message
-    };
+    });
   }
 }

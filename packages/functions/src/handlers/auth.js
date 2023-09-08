@@ -7,6 +7,8 @@ import path from 'path';
 import createErrorHandler from '@functions/middleware/errorHandler';
 import firebase from 'firebase-admin';
 import appConfig from '@functions/config/app';
+import {installService} from '../services/installService';
+import {uninstallService} from '../services/uninstallService';
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp();
@@ -43,8 +45,9 @@ app.use(
     },
     hostName: appConfig.baseUrl,
     isEmbeddedApp: true,
+    afterInstall: installService,
+    afterUninstall: uninstallService,
     afterThemePublish: ctx => {
-      // Publish assets when theme is published or changed here
       return (ctx.body = {
         success: true
       });

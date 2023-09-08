@@ -33,22 +33,16 @@ export default function Notifications() {
       loading={loading}
       emptyState={emptyStateMarkup}
       resourceName={{singular: 'notification', plural: 'notifications'}}
-      promotedBulkActions={[
-        {
-          title: 'actions',
-          actions: [{content: 'Delete', destructive: true}]
-        }
-      ]}
       sortOptions={[{label: 'Newest update'}]}
+      promotedBulkActions={[{content: 'Delete'}]}
       items={data}
       renderItem={data => {
-        const timestampMS = data.timestamp._seconds * 1000;
-        const date = new Date(timestampMS);
+        const date = new Date(data.timestamp);
 
         return (
           <ResourceItem id={data.id} key={data.firstName} persistActions>
             <Stack distribution="equalSpacing">
-              <NotificationPopup {...data} timestamp={getTimeAgo(timestampMS)} />
+              <NotificationPopup {...data} timestamp={getTimeAgo(date.getMilliseconds())} />
               <Stack vertical spacing="extraTight" alignment="trailing">
                 <TextStyle variation="strong">{`From ${formatDateMonthOnly(date)},`}</TextStyle>
                 <TextStyle variation="strong">{`${date.getFullYear()}`}</TextStyle>

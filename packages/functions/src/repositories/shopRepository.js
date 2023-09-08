@@ -14,3 +14,12 @@ export async function getShopById(id) {
   const doc = await collection.doc(id).get();
   return presentDataAndFormatDate(doc, presentShop);
 }
+
+export async function getShopByDomain(domain) {
+  const doc = await collection
+    .where('shopifyDomain', '==', domain)
+    .select('name')
+    .get();
+  console.log(doc.docs[0]);
+  return doc.docs[0];
+}
