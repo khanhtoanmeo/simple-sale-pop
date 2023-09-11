@@ -1,6 +1,5 @@
 import {Firestore} from '@google-cloud/firestore';
 import presentDoc from '../helpers/presentDoc';
-import Shopify from 'shopify-api-node';
 import {orderToNotification} from '../helpers/orderToNotification';
 import {getLatestOrdersQueryStr} from '../helpers/graphqlQueries';
 
@@ -21,12 +20,7 @@ export async function deleteNotifications(shopId) {
   return true;
 }
 
-export async function syncOrdersToNotifications({accessToken, shopifyDomain, shopId}) {
-  const shopify = new Shopify({
-    accessToken,
-    shopName: shopifyDomain
-  });
-
+export async function syncOrdersToNotifications({shopify, shopifyDomain, shopId}) {
   const {orders} = await shopify.graphql(getLatestOrdersQueryStr(30));
   const promises = orders.edges.map(({node}) =>
     collection.add(orderToNotification({node, shopId, shopifyDomain}))

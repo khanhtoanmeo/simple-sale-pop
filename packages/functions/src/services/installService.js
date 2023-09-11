@@ -2,14 +2,18 @@ import {syncOrdersToNotifications} from '../repositories/notificationsRepository
 import {createSetting} from '../repositories/settingsRepository';
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {initialDisplaySettings} from '../const/displaySettings';
+import Shopify from 'shopify-api-node';
 
 export async function installService(ctx) {
   try {
     const {shop: shopifyDomain, accessToken} = ctx.state.shopify;
     const {id: shopId} = await getShopByShopifyDomain(shopifyDomain);
-
+    const shopify = new Shopify({
+      accessToken,
+      shopName: shopifyDomain
+    });
     const tasks = [
-      syncOrdersToNotifications({accessToken, shopId, shopifyDomain}),
+      syncOrdersToNotifications({shopify, shopId, shopifyDomain}),
       createSetting({...initialDisplaySettings, shopId})
     ];
 
