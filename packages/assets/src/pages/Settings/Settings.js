@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Page, Card, Tabs, Layout} from '@shopify/polaris';
-import {initialDisplaySettings} from '../../const/initialDisplaySettings';
 import Display from '../../components/Settings/Display/Display';
 import Triggers from '../../components/Settings/Triggers/Triggers';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
@@ -10,6 +9,9 @@ import SettingsSkeleton from './SettingsSkeleton';
 import useEditApi from '../../hooks/api/useEditApi';
 import useTabs from '../../hooks/tab/useTabs';
 import {isValidUrls} from '../../helpers/isValidUrls';
+import {EXCLUDED_URLS, INCLUDED_URLS, SPECIFIC} from '../../const/displaySettings';
+import {setToast} from '../../actions/storeActions';
+import {useStore} from '../../reducers/storeReducer';
 
 /**
  * @return {JSX.Element}
@@ -17,10 +19,9 @@ import {isValidUrls} from '../../helpers/isValidUrls';
 
 export default function Settings() {
   const {loading, data: displaySettings, handleInputChange} = useFetchApi({
-    url: '/settings',
-    defaultData: initialDisplaySettings
+    url: '/settings'
   });
-  const {editing, handleEdit} = useEditApi({url: `/settings/${displaySettings.id}`});
+  const {editing, handleEdit} = useEditApi({url: `/settings`});
   const [inputError, setInputError] = useState({from: '', message: ''});
 
   const tabs = [
@@ -42,19 +43,20 @@ export default function Settings() {
     }
   ];
   const {setSelected, activeTab, selected} = useTabs(tabs);
+  const {dispatch} = useStore();
 
   async function onSave() {
     try {
       const {includedUrls, excludedUrls} = displaySettings;
       if (!isValidUrls(includedUrls))
-        return setInputError({from: 'includedUrls', message: 'Included urls must be valid urls'});
+        return setInputError({from: INCLUDED_URLS, message: 'Included urls must be valid urls'});
       if (!isValidUrls(excludedUrls))
-        return setInputError({from: 'excludedUrls', message: 'Excluded urls must be valid urls'});
+        return setInputError({from: EXCLUDED_URLS, message: 'Excluded urls must be valid urls'});
 
       await handleEdit(displaySettings);
       setInputError({from: '', message: ''});
     } catch (error) {
-      alert(error.message);
+      setToast(dispatch, error.message, true);
     }
   }
 
@@ -69,8 +71,7 @@ export default function Settings() {
         content: 'Save',
         onAction: onSave,
         loading: editing,
-        disabled:
-          displaySettings.allowShow === 'Specific pages' && !displaySettings.includedUrls.trim()
+        disabled: displaySettings.allowShow === SPECIFIC && !displaySettings.includedUrls.trim()
       }}
     >
       <Layout>

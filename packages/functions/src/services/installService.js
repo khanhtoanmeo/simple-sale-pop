@@ -19,7 +19,6 @@ export async function installService(ctx) {
     });
   } catch (error) {
     ctx.status = 500;
-    console.log(error.message);
     return (ctx.body = {
       success: false,
       message: error.message

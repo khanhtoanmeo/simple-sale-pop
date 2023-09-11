@@ -14,7 +14,6 @@ export async function getNotifications(shopId) {
 }
 
 export async function deleteNotifications(shopId) {
-  //đoạn này cũng ở part sau ạ
   const snapshot = await collection.where('shopId', '==', shopId).get();
   const promises = snapshot.docs.map(doc => doc.ref.delete());
   await Promise.all(promises);

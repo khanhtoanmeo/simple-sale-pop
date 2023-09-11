@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 
 export default function useTabs(tabs, initialTab = 0) {
   const [selected, setSelected] = useState(initialTab);

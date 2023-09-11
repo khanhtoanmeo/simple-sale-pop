@@ -4,6 +4,7 @@ import DesktopPositionInput from '../../DesktopPositionInput/DesktopPositionInpu
 import PropTypes from 'prop-types';
 import {firstSlidersGroup, secondSlidersGroup} from '../../../const/slidersInfo';
 import './Display.scss';
+import {HIDE_TIME_AGO, POSITION, TRUNCATE_PRODUCT_NAME} from '../../../const/displaySettings';
 
 export default function Display({displaySettings, onInputChange}) {
   return (
@@ -13,20 +14,18 @@ export default function Display({displaySettings, onInputChange}) {
           <DesktopPositionInput
             label={'Desktop position'}
             value={displaySettings.position}
-            onChange={val => onInputChange('position', val)}
+            onChange={val => onInputChange(POSITION, val)}
             helpText={'The display position of the pop on your website'}
           />
           <Checkbox
-            onChange={val => onInputChange('hideTimeAgo', val)}
+            onChange={val => onInputChange(HIDE_TIME_AGO, val)}
             checked={displaySettings.hideTimeAgo}
             label="Hide time ago"
-            name="hideTimeAgo"
           />
           <Checkbox
-            onChange={val => onInputChange('truncateProductName', val)}
+            onChange={val => onInputChange(TRUNCATE_PRODUCT_NAME, val)}
             checked={displaySettings.truncateProductName}
             label="Truncate content text"
-            name="truncateProductName"
             helpText='If your product name is long for one line, it will be truncated to "Product na..."'
           />
         </FormLayout>
