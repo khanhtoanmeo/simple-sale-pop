@@ -4,7 +4,8 @@ import {
   SkeletonBodyText,
   SkeletonDisplayText,
   SkeletonPage,
-  ResourceItem
+  ResourceItem,
+  ResourceList
 } from '@shopify/polaris';
 
 export default function NotificationsSkeletion() {
@@ -15,21 +16,14 @@ export default function NotificationsSkeletion() {
           <SkeletonDisplayText />
         </Layout.Section>
         <Layout.Section>
-          <ResourceItem>
-            <SkeletonBodyText />
-          </ResourceItem>
-          <ResourceItem>
-            <SkeletonBodyText />
-          </ResourceItem>
-          <ResourceItem>
-            <SkeletonBodyText />
-          </ResourceItem>
-          <ResourceItem>
-            <SkeletonBodyText />
-          </ResourceItem>
-          <ResourceItem>
-            <SkeletonBodyText />
-          </ResourceItem>
+          <ResourceList
+            items={[1, 2, 3, 4, 5]}
+            renderItem={id => (
+              <ResourceItem key={id}>
+                <SkeletonBodyText />
+              </ResourceItem>
+            )}
+          />
         </Layout.Section>
       </Layout>
     </SkeletonPage>
