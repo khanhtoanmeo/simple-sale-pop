@@ -13,12 +13,7 @@ import {
 
 export default function SettingsSkeleton() {
   return (
-    <SkeletonPage
-      title="Settings"
-      fullWidth
-      subtitle="Decide how your notifications will display"
-      primaryAction
-    >
+    <SkeletonPage title="Settings" fullWidth primaryAction>
       <Layout>
         <Layout.Section secondary>
           <Card sectioned>

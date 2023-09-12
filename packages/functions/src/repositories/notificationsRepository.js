@@ -6,10 +6,29 @@ import {getLatestOrdersQueryStr} from '../helpers/graphqlQueries';
 const firestore = new Firestore();
 const collection = firestore.collection('notifications');
 
-export async function getNotifications(shopId) {
-  const notifications = await collection.where('shopId', '==', shopId).get();
+export async function getNotifications({shopId, limit, page, sort, after, before}) {
+  let query = collection.where('shopId', '==', shopId);
+  const {count} = (await collection.count().get()).data();
 
-  return notifications.docs.map(doc => presentDoc(doc));
+  const [field, direction] = sort.split(':');
+  query = query.orderBy(field, direction);
+  if (after || before) {
+    const cursorValue = await collection.doc(after || before).get();
+    query = after
+      ? query.startAfter(cursorValue).limit(limit)
+      : query.endBefore(cursorValue).limitToLast(limit);
+  } else query = query.limit(limit);
+
+  const notifications = await query.get();
+
+  return {
+    count,
+    notifications: notifications.docs.map(doc => presentDoc(doc)),
+    pageInfo: {
+      hasNext: page * limit < count,
+      hasPre: page > 1
+    }
+  };
 }
 
 export async function createNotification(notification) {

@@ -11,13 +11,18 @@ import {
 } from '@shopify/polaris';
 import React, {useState} from 'react';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
-import useFetchApi from '../../hooks/api/useFetchApi';
 import {formatDateMonthOnly} from '../../helpers/utils/formatFullTime';
 import {getTimeAgo} from '../../helpers/utils/getTimeAgo';
+import usePaginate from '../../hooks/api/usePaginate';
+import NotificationsSkeletion from './NotificationsSkeleton';
 
 export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
-  const {loading, data} = useFetchApi({url: '/notifications'});
+  const {loading, data, pageInfo, nextPage, prevPage, count} = usePaginate({
+    url: '/notifications',
+    defaultLimit: 5,
+    defaultSort: 'timestamp:desc'
+  });
 
   const emptyStateMarkup = (
     <Card>
@@ -30,12 +35,12 @@ export default function Notifications() {
 
   const resourceListMarkup = (
     <ResourceList
-      loading={loading}
       emptyState={emptyStateMarkup}
       resourceName={{singular: 'notification', plural: 'notifications'}}
       sortOptions={[{label: 'Newest update'}]}
       promotedBulkActions={[{content: 'Delete'}]}
       items={data}
+      totalItemsCount={count}
       renderItem={data => {
         const date = new Date(data.timestamp);
 
@@ -57,6 +62,8 @@ export default function Notifications() {
     />
   );
 
+  if (loading) return <NotificationsSkeletion />;
+
   return (
     <Page title="Notifications" subtitle="List of sales notifications from shopify" fullWidth>
       <Layout>
@@ -65,7 +72,12 @@ export default function Notifications() {
         </Layout.Section>
         <Layout.Section>
           <Stack distribution="center">
-            <Pagination />
+            <Pagination
+              hasNext={pageInfo.hasNext}
+              hasPrevious={pageInfo.hasPre}
+              onNext={nextPage}
+              onPrevious={prevPage}
+            />
           </Stack>
         </Layout.Section>
       </Layout>

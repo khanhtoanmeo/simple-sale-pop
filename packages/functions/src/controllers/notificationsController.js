@@ -4,11 +4,18 @@ import {getNotifications} from '../repositories/notificationsRepository';
 export async function getList(ctx) {
   try {
     const shopId = getCurrentShop(ctx);
-    const notifications = await getNotifications(shopId);
+    const {count, notifications, pageInfo} = await getNotifications({
+      ...ctx.query,
+      shopId,
+      page: parseInt(ctx.query.page),
+      limit: parseInt(ctx.query.limit)
+    });
 
     return (ctx.body = {
       data: notifications,
-      success: true
+      success: true,
+      count,
+      pageInfo
     });
   } catch (error) {
     ctx.status = 500;
