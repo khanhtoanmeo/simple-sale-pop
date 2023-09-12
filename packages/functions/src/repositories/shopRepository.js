@@ -20,6 +20,5 @@ export async function getShopByDomain(domain) {
     .where('shopifyDomain', '==', domain)
     .select('name')
     .get();
-  console.log(doc.docs[0]);
   return doc.docs[0];
 }

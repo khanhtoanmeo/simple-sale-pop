@@ -14,14 +14,12 @@ export async function listenNewOrder(ctx) {
 
     const notification = await orderToNotificationRestful({
       order: ctx.req.body,
-      shopify
-    });
-
-    await createNotification({
-      ...notification,
+      shopify,
       shopId,
       shopifyDomain
     });
+
+    await createNotification(notification);
     return (req.body = {
       success: true
     });

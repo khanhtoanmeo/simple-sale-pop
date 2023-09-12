@@ -1,3 +1,7 @@
+import {getLatestOrdersQueryStr} from '../helpers/graphqlQueries';
+import {orderToNotificationGraphQL} from '../helpers/orderToNotification';
+import {createNotification} from '../repositories/notificationsRepository';
+
 export async function registerWebhooks(shopify) {
   const webhooks = [
     {
@@ -8,4 +12,13 @@ export async function registerWebhooks(shopify) {
   ];
 
   return await Promise.all(webhooks.map(webhook => shopify.webhook.create(webhook)));
+}
+
+export async function syncOrdersToNotifications({shopify, shopifyDomain, shopId}) {
+  const {orders} = await shopify.graphql(getLatestOrdersQueryStr(30));
+  const promises = orders.edges.map(({node}) =>
+    createNotification(orderToNotificationGraphQL({node, shopId, shopifyDomain}))
+  );
+
+  return await Promise.all(promises);
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import './NoticationPopup.scss';
+import PropTypes from 'prop-types';
 
 const NotificationPopup = ({
   firstName = 'John Doe',
@@ -24,7 +25,7 @@ const NotificationPopup = ({
             ></div>
             <div className="Avada-SP__Content">
               <div className={'Avada-SP__Title'}>
-                {firstName} in {city}, {country}
+                {firstName || 'Someone'} in {city}, {country}
               </div>
               <div className={`Avada-SP__Subtitle ${truncated && 'Avada-SP__TruncateText'}`}>
                 Purchased {productName}
@@ -48,6 +49,15 @@ const NotificationPopup = ({
   );
 };
 
-NotificationPopup.propTypes = {};
+NotificationPopup.propTypes = {
+  firstName: PropTypes.string,
+  city: PropTypes.string,
+  country: PropTypes.string,
+  productName: PropTypes.string,
+  timestamp: PropTypes.string,
+  productImage: PropTypes.string,
+  truncated: PropTypes.bool,
+  hideTimeAgo: PropTypes.bool
+};
 
 export default NotificationPopup;

@@ -16,7 +16,7 @@ export function orderToNotificationGraphQL({node, shopId, shopifyDomain}) {
   };
 }
 
-export async function orderToNotificationRestful({shopify, order}) {
+export async function orderToNotificationRestful({shopify, order, shopId, shopifyDomain}) {
   const {line_items: lineItems, billing_address: billingAddress, created_at: timestamp} = order;
   const {first_name: firstName, city, country} = billingAddress || {};
   const {product_id: productId, title: productName} = lineItems[0] || {};
@@ -31,6 +31,8 @@ export async function orderToNotificationRestful({shopify, order}) {
     productId: 'gid://shopify/Product/' + productId,
     productImage,
     productName,
-    timestamp
+    timestamp,
+    shopId,
+    shopifyDomain
   };
 }

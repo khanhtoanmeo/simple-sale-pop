@@ -1,12 +1,9 @@
-import {
-  syncOrdersToNotifications,
-  deleteNotifications
-} from '../repositories/notificationsRepository';
+import {deleteNotifications} from '../repositories/notificationsRepository';
 import {createSetting, deleteSetting} from '../repositories/settingsRepository';
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {initialDisplaySettings} from '../const/displaySettings';
 import Shopify from 'shopify-api-node';
-import {registerWebhooks} from './shopifyService';
+import {registerWebhooks, syncOrdersToNotifications} from './shopifyService';
 
 export async function installService(ctx) {
   try {
@@ -38,8 +35,8 @@ export async function uninstallService(ctx) {
   try {
     const shopifyDomain = ctx.get('X-Shopify-Shop-Domain');
     const {id: shopId} = await getShopByShopifyDomain(shopifyDomain);
-    const tasks = [deleteNotifications(shopId), deleteSetting(shopId)];
-    await Promise.all(tasks);
+    const jobs = [deleteNotifications(shopId), deleteSetting(shopId)];
+    await Promise.all(jobs);
     return (ctx.body = {
       success: true
     });
