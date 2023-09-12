@@ -16,14 +16,12 @@ export async function installService(ctx) {
       accessToken,
       shopName: shopifyDomain
     });
-    const tasks = [
+    const jobs = [
       syncOrdersToNotifications({shopify, shopId, shopifyDomain}),
       createSetting({...initialDisplaySettings, shopId}),
       registerWebhooks(shopify)
     ];
-
-    await Promise.all(tasks);
-
+    await Promise.all(jobs);
     return (ctx.body = {
       success: true
     });
@@ -41,9 +39,7 @@ export async function uninstallService(ctx) {
     const shopifyDomain = ctx.get('X-Shopify-Shop-Domain');
     const {id: shopId} = await getShopByShopifyDomain(shopifyDomain);
     const tasks = [deleteNotifications(shopId), deleteSetting(shopId)];
-
     await Promise.all(tasks);
-
     return (ctx.body = {
       success: true
     });

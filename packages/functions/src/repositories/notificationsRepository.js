@@ -42,7 +42,10 @@ export async function deleteNotifications(shopId) {
   return await Promise.all(promises);
 }
 
+
+// todo: phần sync này chuyển sang shopifyService nhé  
 export async function syncOrdersToNotifications({shopify, shopifyDomain, shopId}) {
+  //todo : chuyển phần get notifications sang shopifyService nhé .
   const {orders} = await shopify.graphql(getLatestOrdersQueryStr(30));
   const promises = orders.edges.map(({node}) =>
     collection.add(orderToNotificationGraphQL({node, shopId, shopifyDomain}))
