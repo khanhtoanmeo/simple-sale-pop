@@ -10,12 +10,14 @@ export async function getNotifications({shopId, limit, page, sort, after, before
 
   const [field, direction] = sort.split(':');
   query = query.orderBy(field, direction);
+
   if (after || before) {
     const cursorValue = await collection.doc(after || before).get();
     query = after
       ? query.startAfter(cursorValue).limit(limit)
       : query.endBefore(cursorValue).limitToLast(limit);
-  } else query = query.limit(limit);
+  }
+  if (!after && !before) query = query.limit(limit);
 
   const notifications = await query.get();
 

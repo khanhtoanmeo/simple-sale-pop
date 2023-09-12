@@ -5,7 +5,7 @@ import {createNotification} from '../repositories/notificationsRepository';
 export async function registerWebhooks(shopify) {
   const webhooks = [
     {
-      address: 'https://5fac-123-17-158-3.ngrok.io/webhook/order/new',
+      address: 'https://215b-123-17-158-3.ngrok.io/webhook/order/new',
       topic: 'orders/create',
       format: 'json'
     }

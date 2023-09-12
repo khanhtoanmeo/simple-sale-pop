@@ -20,11 +20,13 @@ export async function listenNewOrder(ctx) {
     });
 
     await createNotification(notification);
-    return (req.body = {
+    ctx.status = 201;
+    return (ctx.body = {
       success: true
     });
   } catch (error) {
     ctx.status = 500;
+    console.log('ERROR :::::::::::: ', error.message);
     return (ctx.body = {
       success: false,
       message: error.message
