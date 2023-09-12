@@ -19,9 +19,7 @@ export async function updateSetting(shopId, setting) {
     .where('shopId', '==', shopId)
     .limit(1)
     .get();
-  await snapshot.docs[0].ref.update(setting);
-
-  return true;
+  return await snapshot.docs[0].ref.update(setting);
 }
 
 export async function createSetting(setting) {
@@ -35,7 +33,6 @@ export async function deleteSetting(shopId) {
     .where('shopId', '==', shopId)
     .limit(1)
     .get();
-  await snapshot.docs[0].ref.delete();
 
-  return true;
+  return await snapshot.docs[0].ref.delete();
 }
