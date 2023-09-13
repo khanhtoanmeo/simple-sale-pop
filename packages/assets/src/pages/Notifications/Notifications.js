@@ -20,7 +20,7 @@ export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
   const {loading, data, pageInfo, nextPage, prevPage, count} = usePaginate({
     url: '/notifications',
-    defaultLimit: 5,
+    defaultLimit: 4,
     defaultSort: 'timestamp:desc'
   });
 
@@ -42,7 +42,7 @@ export default function Notifications() {
       items={data}
       totalItemsCount={count}
       renderItem={data => {
-        const date = new Date(data.timestamp);
+        const date = new Date(data.timestamp._seconds * 1000);
 
         return (
           <ResourceItem id={data.id} key={data.firstName} persistActions>

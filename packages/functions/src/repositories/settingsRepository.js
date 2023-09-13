@@ -22,9 +22,10 @@ export async function updateSetting(shopId, setting) {
   return await snapshot.docs[0].ref.update(setting);
 }
 
-export async function createSetting(setting) {
-  const docRef = await collection.add(setting);
-  return {setting, id: docRef.id};
+export async function createSetting({setting, shopId}) {
+  const newSetting = {...setting, shopId};
+  const docRef = await collection.add(newSetting);
+  return {setting: newSetting, id: docRef.id};
 }
 
 export async function deleteSetting(shopId) {

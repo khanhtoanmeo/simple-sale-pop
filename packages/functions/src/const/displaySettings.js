@@ -1,4 +1,4 @@
-export const initialDisplaySettings = {
+export const defaultDisplaySettings = {
   position: 'bottom-left',
   truncateProductName: true,
   hideTimeAgo: false,

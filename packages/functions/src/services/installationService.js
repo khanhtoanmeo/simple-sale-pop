@@ -1,21 +1,17 @@
 import {deleteNotifications} from '../repositories/notificationsRepository';
 import {createSetting, deleteSetting} from '../repositories/settingsRepository';
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
-import {initialDisplaySettings} from '../const/displaySettings';
-import Shopify from 'shopify-api-node';
-import {registerWebhooks, syncOrdersToNotifications} from './shopifyService';
+import {defaultDisplaySettings} from '../const/displaySettings';
+import {initShopify, registerWebhooks, syncOrdersToNotifications} from './shopifyService';
 
 export async function installService(ctx) {
   try {
     const {shop: shopifyDomain, accessToken} = ctx.state.shopify;
     const {id: shopId} = await getShopByShopifyDomain(shopifyDomain);
-    const shopify = new Shopify({
-      accessToken,
-      shopName: shopifyDomain
-    });
+    const shopify = initShopify({accessToken, shopifyDomain});
     const jobs = [
       syncOrdersToNotifications({shopify, shopId, shopifyDomain}),
-      createSetting({...initialDisplaySettings, shopId}),
+      createSetting({setting: defaultDisplaySettings, shopId}),
       registerWebhooks(shopify)
     ];
     await Promise.all(jobs);
