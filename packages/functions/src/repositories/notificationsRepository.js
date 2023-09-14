@@ -1,11 +1,13 @@
 import {Firestore} from '@google-cloud/firestore';
-import presentDoc from '../helpers/presentDoc';
+import presentDoc from '../presenters/documentPresenter';
+import {presentNotification} from '../presenters/notificationPresenter';
 
 const firestore = new Firestore();
 const collection = firestore.collection('notifications');
 
-export async function getNotifications({shopId, limit, page, sort, after, before}) {
+export async function getNotificationsWithPagination({shopId, limit, page, sort, after, before}) {
   let query = collection.where('shopId', '==', shopId);
+
   const {count} = (await collection.count().get()).data();
 
   const [field, direction] = sort.split(':');
@@ -19,16 +21,24 @@ export async function getNotifications({shopId, limit, page, sort, after, before
   }
   if (!after && !before) query = query.limit(limit);
 
-  const notifications = await query.get();
+  const snapshot = await query.get();
 
   return {
     count,
-    notifications: notifications.docs.map(doc => presentDoc(doc)),
+    notifications: snapshot.docs.map(doc => presentDoc(doc)),
     pageInfo: {
       hasNext: page * limit < count,
       hasPre: page > 1
     }
   };
+}
+
+export async function getNotifications({shopifyDomain, limit = 20}) {
+  const snapshot = await collection
+    .where('shopifyDomain', '==', shopifyDomain)
+    .limit(limit)
+    .get();
+  return snapshot.docs.map(doc => presentNotification(presentDoc(doc)));
 }
 
 export async function createNotification(notification) {

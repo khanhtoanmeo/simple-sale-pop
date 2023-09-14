@@ -12,9 +12,9 @@ import {
 import React, {useState} from 'react';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
 import {formatDateMonthOnly} from '../../helpers/utils/formatFullTime';
-import {getTimeAgo} from '../../helpers/utils/getTimeAgo';
 import usePaginate from '../../hooks/api/usePaginate';
 import NotificationsSkeletion from './NotificationsSkeleton';
+import moment from 'moment';
 
 export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -38,7 +38,6 @@ export default function Notifications() {
       emptyState={emptyStateMarkup}
       resourceName={{singular: 'notification', plural: 'notifications'}}
       sortOptions={[{label: 'Newest update'}]}
-      promotedBulkActions={[{content: 'Delete'}]}
       items={data}
       totalItemsCount={count}
       renderItem={data => {
@@ -47,7 +46,7 @@ export default function Notifications() {
         return (
           <ResourceItem id={data.id} key={data.firstName} persistActions>
             <Stack distribution="equalSpacing">
-              <NotificationPopup {...data} timestamp={getTimeAgo(date.getTime())} />
+              <NotificationPopup {...data} timestamp={moment(date).fromNow()} />
               <Stack vertical spacing="extraTight" alignment="trailing">
                 <TextStyle variation="strong">{`From ${formatDateMonthOnly(date)},`}</TextStyle>
                 <TextStyle variation="strong">{`${date.getFullYear()}`}</TextStyle>

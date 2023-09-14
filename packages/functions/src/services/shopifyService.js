@@ -29,15 +29,7 @@ const queryStr = `{
   }
 }`;
 
-export async function registerWebhooks(shopify) {
-  const webhooks = [
-    {
-      address: 'https://5e5c-27-76-108-224.ngrok.io/webhook/order/new',
-      topic: 'orders/create',
-      format: 'json'
-    }
-  ];
-
+export async function registerWebhooks({shopify, webhooks}) {
   return await Promise.all(webhooks.map(webhook => shopify.webhook.create(webhook)));
 }
 

@@ -1,10 +1,10 @@
 import {getCurrentShop} from '../helpers/auth';
-import {getNotifications} from '../repositories/notificationsRepository';
+import {getNotificationsWithPagination} from '../repositories/notificationsRepository';
 
 export async function getList(ctx) {
   try {
     const shopId = getCurrentShop(ctx);
-    const {count, notifications, pageInfo} = await getNotifications({
+    const {count, notifications, pageInfo} = await getNotificationsWithPagination({
       ...ctx.query,
       shopId,
       page: parseInt(ctx.query.page),
