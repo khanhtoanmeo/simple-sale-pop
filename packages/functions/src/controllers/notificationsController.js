@@ -4,11 +4,12 @@ import {getNotificationsWithPagination} from '../repositories/notificationsRepos
 export async function getList(ctx) {
   try {
     const shopId = getCurrentShop(ctx);
+    const {page, limit} = ctx.query;
     const {count, notifications, pageInfo} = await getNotificationsWithPagination({
       ...ctx.query,
       shopId,
-      page: parseInt(ctx.query.page),
-      limit: parseInt(ctx.query.limit)
+      page: parseInt(page),
+      limit: parseInt(limit)
     });
 
     return (ctx.body = {

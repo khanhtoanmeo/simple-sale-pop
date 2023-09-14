@@ -11,7 +11,7 @@ export async function installService(ctx) {
 
     const webhooks = [
       {
-        address: 'https://5e5c-27-76-108-224.ngrok.io/webhook/order/new',
+        address: 'https://67d4-171-224-179-131.ngrok.io/webhook/order/new',
         topic: 'orders/create',
         format: 'json'
       }
