@@ -33,9 +33,12 @@ export async function getNotificationsWithPagination({shopId, limit, page, sort,
   };
 }
 
-export async function getNotifications({shopifyDomain, limit = 20}) {
+export async function getNotifications({shopifyDomain, limit = 20, sort = 'timestamp:desc'}) {
+  const [field, direction] = sort.split(':');
+
   const snapshot = await collection
     .where('shopifyDomain', '==', shopifyDomain)
+    .orderBy(field, direction)
     .limit(limit)
     .get();
   return snapshot.docs.map(doc => presentNotification(presentDoc(doc)));

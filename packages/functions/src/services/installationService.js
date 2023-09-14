@@ -2,28 +2,27 @@ import {deleteNotifications} from '../repositories/notificationsRepository';
 import {createSetting, deleteSetting} from '../repositories/settingRepository';
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {defaultDisplaySettings} from '../const/displaySettings';
-import {initShopify, registerWebhooks, syncOrdersToNotifications} from './shopifyService';
+import {
+  initShopify,
+  registerScriptTags,
+  registerWebhooks,
+  syncOrdersToNotifications
+} from './shopifyService';
 
 export async function installService(ctx) {
   try {
     const {shop: shopifyDomain, accessToken} = ctx.state.shopify;
     const {id: shopId} = await getShopByShopifyDomain(shopifyDomain);
-
-    const webhooks = [
-      {
-        address: 'https://67d4-171-224-179-131.ngrok.io/webhook/order/new',
-        topic: 'orders/create',
-        format: 'json'
-      }
-    ];
-
     const shopify = initShopify({accessToken, shopifyDomain});
     const jobs = [
       syncOrdersToNotifications({shopify, shopId, shopifyDomain}),
       createSetting({setting: {...defaultDisplaySettings, shopId, shopifyDomain}}),
-      registerWebhooks({shopify, webhooks})
+      registerWebhooks(shopify),
+      registerScriptTags(shopify)
     ];
+
     await Promise.all(jobs);
+
     return (ctx.body = {
       success: true
     });
@@ -41,7 +40,9 @@ export async function uninstallService(ctx) {
     const shopifyDomain = ctx.get('X-Shopify-Shop-Domain');
     const {id: shopId} = await getShopByShopifyDomain(shopifyDomain);
     const jobs = [deleteNotifications(shopId), deleteSetting(shopId)];
+
     await Promise.all(jobs);
+
     return (ctx.body = {
       success: true
     });

@@ -29,8 +29,23 @@ const queryStr = `{
   }
 }`;
 
-export async function registerWebhooks({shopify, webhooks}) {
+export async function registerWebhooks(shopify) {
+  const webhooks = [
+    {
+      address: 'https://27b5-171-224-179-131.ngrok.io/webhook/order/new',
+      topic: 'orders/create',
+      format: 'json'
+    }
+  ];
   return await Promise.all(webhooks.map(webhook => shopify.webhook.create(webhook)));
+}
+
+export async function registerScriptTags(shopify) {
+  const scriptTags = [
+    {src: 'https://localhost:3000/scripttag/avada-sale-pop.min.js', event: 'onload'}
+  ];
+
+  return await Promise.all(scriptTags.map(scriptTag => shopify.scriptTag.create(scriptTag)));
 }
 
 export async function syncOrdersToNotifications({shopify, shopifyDomain, shopId}) {
