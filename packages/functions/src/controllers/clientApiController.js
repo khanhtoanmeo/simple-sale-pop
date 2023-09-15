@@ -1,6 +1,8 @@
 import {getNotifications} from '../repositories/notificationsRepository';
 import {getSettingsByShopifyDomain} from '../repositories/settingsRepository';
 
+//todo: tách hẳn 1 thư mục cho clientApi nhé 
+
 export async function getClientData(ctx) {
   try {
     const {shopifyDomain} = ctx.query;

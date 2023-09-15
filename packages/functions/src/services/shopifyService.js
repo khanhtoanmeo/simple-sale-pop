@@ -32,6 +32,8 @@ const queryStr = `{
 
 export async function registerWebhooks(shopify) {
   const {baseUrl} = appConfig;
+
+  //todo: array này chỉ cần path , topic . có thể thêm format . Đoan address xử lí trong webhooks map , lúc nếu cần đổi baseUrl thì đổi ở đó luôn nhé nhanh
   const webhooks = [
     {
       address: `https://${baseUrl}/webhook/order/new`,
@@ -43,6 +45,7 @@ export async function registerWebhooks(shopify) {
 }
 
 export async function registerScriptTags(shopify) {
+  //todo: tương tự webhooks
   const scriptTags = [
     {src: 'https://localhost:3000/scripttag/avada-sale-pop.min.js', event: 'onload'}
   ];
@@ -79,6 +82,8 @@ export function orderToNotificationGraphQL({node, shopId, shopifyDomain}) {
 }
 
 export async function orderToNotificationRestful({shopify, order, shopId, shopifyDomain}) {
+
+  //todo: viết thành hàm prepareOrder nhé chứ không phải tên hàm thế kia đâu .
   const {
     line_items: lineItems = [],
     billing_address: billingAddress,

@@ -16,6 +16,7 @@ export async function listenNewOrder(ctx) {
     });
 
     await createNotification(notification);
+    
     ctx.status = 200;
     return (ctx.body = {
       success: true
