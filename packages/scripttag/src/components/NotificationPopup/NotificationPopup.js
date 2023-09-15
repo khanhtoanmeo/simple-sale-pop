@@ -1,7 +1,7 @@
 import React from 'react';
 import './NoticationPopup.scss';
 import PropTypes from 'prop-types';
-import {bottomLeft, bottomRight, topLeft, topRight} from '../../const/desktopPostion';
+import {BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT} from '../../const/displaySettings';
 
 const NotificationPopup = ({
   firstName = 'John Doe',
@@ -12,21 +12,21 @@ const NotificationPopup = ({
   productImage = 'https://boostsales.apps.avada.io/42b7c27ec4d0b67163b3d2adc1f1221e.png',
   truncateProductName = false,
   hideTimeAgo = false,
-  position = bottomLeft
+  position = BOTTOM_LEFT
 }) => {
   function getPositionClassName(position) {
     let classNamePostfix;
     switch (position) {
-      case bottomLeft:
+      case BOTTOM_LEFT:
         classNamePostfix = 'BottomLeft';
         break;
-      case bottomRight:
+      case BOTTOM_RIGHT:
         classNamePostfix = 'BottomRight';
         break;
-      case topLeft:
+      case TOP_LEFT:
         classNamePostfix = 'TopLeft';
         break;
-      case topRight:
+      case TOP_RIGHT:
         classNamePostfix = 'TopRight';
         break;
     }
@@ -70,7 +70,15 @@ const NotificationPopup = ({
           </a>
         </div>
       </div>
-      <svg viewBox="0 0 20 20" className="Icon_Icon__Dm3QW Avada-SP__CancelButton">
+      <svg
+        viewBox="0 0 20 20"
+        className="Icon_Icon__Dm3QW Avada-SP__CancelButton"
+        onClick={() => {
+          const popEl = document.getElementById('Avada-SP__Pop');
+          popEl.classList.remove('Avada-SP__Pop--Display');
+          popEl.classList.add('Avada-SP__Pop--Hide');
+        }}
+      >
         <path d="M13.97 15.03a.75.75 0 1 0 1.06-1.06l-3.97-3.97 3.97-3.97a.75.75 0 0 0-1.06-1.06l-3.97 3.97-3.97-3.97a.75.75 0 0 0-1.06 1.06l3.97 3.97-3.97 3.97a.75.75 0 1 0 1.06 1.06l3.97-3.97 3.97 3.97Z"></path>
       </svg>
     </div>

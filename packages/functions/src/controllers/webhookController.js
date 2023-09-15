@@ -1,14 +1,14 @@
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {createNotification} from '../repositories/notificationsRepository';
-import {initShopify, orderToNotificationRestful} from '../services/shopifyService';
+import {initShopify, prepareNotificationRestful} from '../services/shopifyService';
 
-export async function listenNewOrder(ctx) {
+export async function handleNewOrder(ctx) {
   try {
     const shopifyDomain = ctx.get('X-Shopify-Shop-Domain');
     const {accessToken, id: shopId} = await getShopByShopifyDomain(shopifyDomain);
     const shopify = initShopify({accessToken, shopifyDomain});
 
-    const notification = await orderToNotificationRestful({
+    const notification = await prepareNotificationRestful({
       order: ctx.req.body,
       shopify,
       shopId,
@@ -16,7 +16,7 @@ export async function listenNewOrder(ctx) {
     });
 
     await createNotification(notification);
-    
+
     ctx.status = 200;
     return (ctx.body = {
       success: true

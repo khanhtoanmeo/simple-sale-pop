@@ -1,9 +1,8 @@
 import Router from 'koa-router';
-import {getClientData} from '../controllers/clientApiController';
+import {handleGetNotifications} from '../controllers/clientApi/clientApiController';
 
 const router = new Router({prefix: '/clientApi'});
 
-//todo: handleGetNotifications
-router.get('/notifications', getClientData);
+router.get('/notifications', handleGetNotifications);
 
 export default router;

@@ -31,42 +31,52 @@ const queryStr = `{
 }`;
 
 export async function registerWebhooks(shopify) {
-  const {baseUrl} = appConfig;
-
-  //todo: array này chỉ cần path , topic . có thể thêm format . Đoan address xử lí trong webhooks map , lúc nếu cần đổi baseUrl thì đổi ở đó luôn nhé nhanh
+  const baseUrl = `https://${appConfig.baseUrl}`;
   const webhooks = [
     {
-      address: `https://${baseUrl}/webhook/order/new`,
-      topic: 'orders/create',
-      format: 'json'
+      path: `/webhook/order/new`,
+      topic: 'orders/create'
     }
   ];
-  return await Promise.all(webhooks.map(webhook => shopify.webhook.create(webhook)));
+
+  return await Promise.all(
+    webhooks.map(({path, topic}) =>
+      shopify.webhook.create({
+        address: baseUrl + path,
+        topic
+      })
+    )
+  );
 }
 
 export async function registerScriptTags(shopify) {
-  //todo: tương tự webhooks
-  const scriptTags = [
-    {src: 'https://localhost:3000/scripttag/avada-sale-pop.min.js', event: 'onload'}
-  ];
+  const baseUrl = 'https://localhost:3000';
+  const scriptTags = [{path: '/scripttag/avada-sale-pop.min.js', event: 'onload'}];
 
-  return await Promise.all(scriptTags.map(scriptTag => shopify.scriptTag.create(scriptTag)));
+  return await Promise.all(
+    scriptTags.map(({path, event}) =>
+      shopify.scriptTag.create({
+        src: baseUrl + path,
+        event
+      })
+    )
+  );
 }
 
 export async function syncOrdersToNotifications({shopify, shopifyDomain, shopId}) {
   const {orders} = await shopify.graphql(queryStr);
 
   const promises = orders.edges.map(({node}) =>
-    createNotification(orderToNotificationGraphQL({node, shopId, shopifyDomain}))
+    createNotification(prepareNotificationGraphQL({node, shopId, shopifyDomain}))
   );
 
   return await Promise.all(promises);
 }
 
-export function orderToNotificationGraphQL({node, shopId, shopifyDomain}) {
-  const {createdAt, billingAddress, lineItems = []} = node;
+export function prepareNotificationGraphQL({node, shopId, shopifyDomain}) {
+  const {createdAt, billingAddress, lineItems = {}} = node;
   const {firstName, city, country} = billingAddress || {};
-  const {id, title, featuredImage} = lineItems.edges[0].node.product || {};
+  const {id, title, featuredImage} = lineItems.edges[0]?.node?.product || {};
 
   return {
     firstName,
@@ -81,9 +91,7 @@ export function orderToNotificationGraphQL({node, shopId, shopifyDomain}) {
   };
 }
 
-export async function orderToNotificationRestful({shopify, order, shopId, shopifyDomain}) {
-
-  //todo: viết thành hàm prepareOrder nhé chứ không phải tên hàm thế kia đâu .
+export async function prepareNotificationRestful({shopify, order, shopId, shopifyDomain}) {
   const {
     line_items: lineItems = [],
     billing_address: billingAddress,

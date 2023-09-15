@@ -3,6 +3,8 @@ import {render} from 'preact';
 import React from 'preact/compat';
 import NotificationPopup from '../components/NotificationPopup/NotificationPopup';
 import delay from '../helpers/delay';
+import {getUrlsArray} from '../helpers/getUrlsArray';
+import {SPECIFIC} from '../const/triggersSetting';
 
 export default class DisplayManager {
   constructor() {
@@ -25,7 +27,6 @@ export default class DisplayManager {
   display({notification}) {
     const {truncateProductName, hideTimeAgo, position} = this.settings;
     const container = document.querySelector('#Avada-SP__Pop');
-
     container.classList.add('Avada-SP__Pop--Display');
     container.classList.remove('Avada-SP__Pop--Hide');
 
@@ -51,7 +52,23 @@ export default class DisplayManager {
     return popupEl;
   }
   async displayNotifications() {
-    const {firstDelay, popsInterval, displayDuration, maxPopsDisplay} = this.settings;
+    const {
+      firstDelay,
+      popsInterval,
+      displayDuration,
+      maxPopsDisplay,
+      includedUrls,
+      excludedUrls,
+      allowShow
+    } = this.settings;
+
+    const includedUrlsArr = getUrlsArray(includedUrls);
+    const excludedUrlsArr = getUrlsArray(excludedUrls);
+    const {href: currentUrl} = window.location;
+
+    if (allowShow === SPECIFIC && !includedUrlsArr.includes(currentUrl)) return;
+    if (excludedUrlsArr.includes(currentUrl)) return;
+
     await delay(firstDelay);
 
     for (let index = 0; index < maxPopsDisplay; index++) {

@@ -1,9 +1,7 @@
-import {getNotifications} from '../repositories/notificationsRepository';
-import {getSettingsByShopifyDomain} from '../repositories/settingsRepository';
+import {getNotifications} from '../../repositories/notificationsRepository';
+import {getSettingsByShopifyDomain} from '../../repositories/settingsRepository';
 
-//todo: tách hẳn 1 thư mục cho clientApi nhé 
-
-export async function getClientData(ctx) {
+export async function handleGetNotifications(ctx) {
   try {
     const {shopifyDomain} = ctx.query;
     const [settings, notifications] = await Promise.all([
