@@ -1,24 +1,26 @@
 import {getNotifications} from '../repositories/notificationsRepository';
-import {getSettingByShopifyDomain} from '../repositories/settingRepository';
+import {getSettingsByShopifyDomain} from '../repositories/settingsRepository';
 
-export async function getShopData(ctx) {
+export async function getClientData(ctx) {
   try {
     const {shopifyDomain} = ctx.query;
-    const [setting, notifications] = await Promise.all([
-      getSettingByShopifyDomain(shopifyDomain),
+    const [settings, notifications] = await Promise.all([
+      getSettingsByShopifyDomain(shopifyDomain),
       getNotifications({shopifyDomain})
     ]);
     ctx.body = {
       data: {
-        setting,
+        settings,
         notifications
       }
     };
   } catch (error) {
     ctx.status = 500;
+    console.log(error);
     return (ctx.body = {
       success: false,
-      message: error.message
+      message: error.message,
+      data: {}
     });
   }
 }

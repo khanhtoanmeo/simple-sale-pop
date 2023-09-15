@@ -16,7 +16,7 @@ export default function apiRouter(isEmbed = false) {
   router.get('/subscription', subscriptionController.getSubscription);
   router.get('/appNews', appNewsController.getList);
   router.get('/notifications', notificationsController.getList);
-  router.get('/settings', settingsController.getList);
+  router.get('/settings', settingsController.get);
   router.put('/settings', updateSettingMiddleware, settingsController.update);
 
   return router;

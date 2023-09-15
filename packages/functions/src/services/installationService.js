@@ -1,5 +1,5 @@
 import {deleteNotifications} from '../repositories/notificationsRepository';
-import {createSetting, deleteSetting} from '../repositories/settingRepository';
+import {createSetting, deleteSetting} from '../repositories/settingsRepository';
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {defaultDisplaySettings} from '../const/displaySettings';
 import {

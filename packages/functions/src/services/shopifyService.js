@@ -1,5 +1,6 @@
 import Shopify from 'shopify-api-node';
 import {createNotification} from '../repositories/notificationsRepository';
+import appConfig from '@functions/config/app';
 
 const queryStr = `{
   orders(first:30,sortKey:CREATED_AT,reverse:true) {
@@ -30,9 +31,10 @@ const queryStr = `{
 }`;
 
 export async function registerWebhooks(shopify) {
+  const {baseUrl} = appConfig;
   const webhooks = [
     {
-      address: 'https://27b5-171-224-179-131.ngrok.io/webhook/order/new',
+      address: `https://${baseUrl}/webhook/order/new`,
       topic: 'orders/create',
       format: 'json'
     }

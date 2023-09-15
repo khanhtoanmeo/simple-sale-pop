@@ -7,13 +7,11 @@ export default class ApiManager {
 
   getApiData = async () => {
     const {
-      data: {notifications, setting}
+      data: {notifications, settings}
     } = await makeRequest(
-      `https://localhost:3000/clientApi/shopData?shopifyDomain=${Shopify.shop}`
+      `https://localhost:3000/clientApi/notifications?shopifyDomain=${Shopify.shop}`
     );
-    console.log(notifications);
-    console.log(setting);
 
-    return {notifications, settings: setting};
+    return {notifications, settings};
   };
 }

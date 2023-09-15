@@ -1,13 +1,13 @@
 import {getCurrentShop} from '../helpers/auth';
-import {getSettingByShopId, updateSetting} from '../repositories/settingsRepository';
+import {getSettingsByShopId, updateSetting} from '../repositories/settingsRepository';
 
-export async function getList(ctx) {
+export async function get(ctx) {
   try {
     const shopId = getCurrentShop(ctx);
-    const setting = await getSettingByShopId(shopId);
+    const settings = await getSettingsByShopId(shopId);
 
     return (ctx.body = {
-      data: setting,
+      data: settings,
       success: true
     });
   } catch (error) {

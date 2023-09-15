@@ -6,7 +6,7 @@ const firestore = new Firestore();
 
 const collection = firestore.collection('settings');
 
-export async function getSettingByShopId(shopId) {
+export async function getSettingsByShopId(shopId) {
   const snapshot = await collection
     .where('shopId', '==', shopId)
     .limit(1)
@@ -15,7 +15,7 @@ export async function getSettingByShopId(shopId) {
   return presentSetting(presentDoc(snapshot.docs[0]));
 }
 
-export async function getSettingByShopifyDomain(shopifyDomain) {
+export async function getSettingsByShopifyDomain(shopifyDomain) {
   const snapshot = await collection
     .where('shopifyDomain', '==', shopifyDomain)
     .limit(1)
