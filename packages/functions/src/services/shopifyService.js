@@ -51,6 +51,8 @@ export async function registerWebhooks(shopify) {
 }
 
 export async function registerScriptTags(shopify) {
+  //todo: viết baseUrl dang const BASE_URL = '...' và viết ở trên đầu 
+  // liệu base url của srcipt tag có dùng chung đc với webhook không ? 
   const baseUrl = 'https://localhost:3000';
   const scriptTags = [{path: '/scripttag/avada-sale-pop.min.js', event: 'onload'}];
 
