@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import {handleNewOrder} from '../controllers/webhookController';
+import {handleNewOrder} from '../controllers/ordersController';
 
 const router = new Router({prefix: '/webhook'});
 

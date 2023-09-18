@@ -20,7 +20,7 @@ export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
   const {loading, data, pageInfo, nextPage, prevPage, count} = usePaginate({
     url: '/notifications',
-    defaultLimit: 4,
+    defaultLimit: 6,
     defaultSort: 'timestamp:desc'
   });
 

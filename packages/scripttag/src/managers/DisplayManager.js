@@ -15,13 +15,18 @@ export default class DisplayManager {
     this.notifications = notifications;
     this.settings = settings;
     this.insertContainer();
-    this.displayNotifications();
+    await this.displayNotifications();
+    this.delete();
   }
 
   fadeOut() {
     const container = document.querySelector('#Avada-SP__Pop');
     container.classList.remove('Avada-SP__Pop--Display');
     container.classList.add('Avada-SP__Pop--Hide');
+  }
+
+  delete() {
+    document.querySelector('#Avada-SP__Pop').remove();
   }
 
   display({notification}) {

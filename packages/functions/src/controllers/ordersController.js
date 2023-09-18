@@ -1,6 +1,7 @@
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {createNotification} from '../repositories/notificationsRepository';
-import {initShopify, prepareNotificationRestful} from '../services/shopifyService';
+import {initShopify} from '../services/shopifyService';
+import {prepareNotificationRestful} from '../helpers/prepareNotification';
 
 export async function handleNewOrder(ctx) {
   try {
@@ -10,12 +11,10 @@ export async function handleNewOrder(ctx) {
 
     const notification = await prepareNotificationRestful({
       order: ctx.req.body,
-      shopify,
-      shopId,
-      shopifyDomain
+      shopify
     });
 
-    await createNotification(notification);
+    await createNotification({...notification, shopId, shopifyDomain});
 
     ctx.status = 200;
     return (ctx.body = {

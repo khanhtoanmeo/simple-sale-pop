@@ -1,6 +1,7 @@
 import Shopify from 'shopify-api-node';
-import {createNotification} from '../repositories/notificationsRepository';
 import appConfig from '@functions/config/app';
+import {prepareNotificationGraphQL} from '../helpers/prepareNotification';
+import {createNotification} from '../repositories/notificationsRepository';
 
 const queryStr = `{
   orders(first:30,sortKey:CREATED_AT,reverse:true) {
@@ -71,49 +72,6 @@ export async function syncOrdersToNotifications({shopify, shopifyDomain, shopId}
   );
 
   return await Promise.all(promises);
-}
-
-export function prepareNotificationGraphQL({node, shopId, shopifyDomain}) {
-  const {createdAt, billingAddress, lineItems = {}} = node;
-  const {firstName, city, country} = billingAddress || {};
-  const {id, title, featuredImage} = lineItems.edges[0]?.node?.product || {};
-
-  return {
-    firstName,
-    city,
-    country,
-    productId: id,
-    productName: title,
-    productImage: featuredImage.url,
-    timestamp: new Date(createdAt),
-    shopId,
-    shopifyDomain
-  };
-}
-
-export async function prepareNotificationRestful({shopify, order, shopId, shopifyDomain}) {
-  const {
-    line_items: lineItems = [],
-    billing_address: billingAddress,
-    created_at: timestamp
-  } = order;
-  const {first_name: firstName, city, country} = billingAddress || {};
-  const {product_id: productId, title: productName} = lineItems[0] || {};
-  const {
-    image: {src: productImage}
-  } = await shopify.product.get(parseInt(productId));
-
-  return {
-    city,
-    country,
-    firstName,
-    productId: 'gid://shopify/Product/' + productId,
-    productImage,
-    productName,
-    timestamp: new Date(timestamp),
-    shopId,
-    shopifyDomain
-  };
 }
 
 export function initShopify({accessToken, shopifyDomain}) {
