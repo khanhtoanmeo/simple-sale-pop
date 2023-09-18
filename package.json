@@ -16,7 +16,7 @@
     "eslint-fix": "npm --prefix packages/assets/ run eslint-fix && npm --prefix packages/functions/ run eslint-fix",
     "start-dev-embed": "npm run timeout && echo 'backend build running...' && concurrently \"yarn workspace @avada/functions run watch\"",
     "start-dev": "concurrently \"yarn workspace @avada/assets run watch\" \"yarn workspace @avada/functions run watch\"",
-    "dev": "shopify app dev --skip-dependencies-installation --reset",
+    "dev": "shopify app dev --skip-dependencies-installation",
     "dev-reset": "shopify app dev --skip-dependencies-installation --reset",
     "info": "shopify app info",
     "update-app-local-url": "shopify app update-url --app-url https://localhost:3000/authSa/shopify --redirect-urls=https://localhost:3000/auth/shopify/callback,https://localhost:3000/authSa/shopify/callback,https://localhost:3000/auth/shopify/embed/callback",

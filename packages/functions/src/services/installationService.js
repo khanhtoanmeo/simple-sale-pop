@@ -17,8 +17,8 @@ export async function installService(ctx) {
     const jobs = [
       syncOrdersToNotifications({shopify, shopId, shopifyDomain}),
       createSetting({setting: {...defaultDisplaySettings, shopId, shopifyDomain}}),
-      registerWebhooks(shopify),
-      registerScriptTags(shopify)
+      registerWebhooks(shopify)
+      // registerScriptTags(shopify)
     ];
 
     await Promise.all(jobs);
