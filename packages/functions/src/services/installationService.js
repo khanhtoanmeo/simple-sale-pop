@@ -2,12 +2,7 @@ import {deleteNotifications} from '../repositories/notificationsRepository';
 import {createSetting, deleteSetting} from '../repositories/settingsRepository';
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {defaultDisplaySettings} from '../const/displaySettings';
-import {
-  initShopify,
-  registerScriptTags,
-  registerWebhooks,
-  syncOrdersToNotifications
-} from './shopifyService';
+import {initShopify, registerWebhooks, syncOrdersToNotifications} from './shopifyService';
 
 export async function installService(ctx) {
   try {
@@ -17,8 +12,7 @@ export async function installService(ctx) {
     const jobs = [
       syncOrdersToNotifications({shopify, shopId, shopifyDomain}),
       createSetting({setting: {...defaultDisplaySettings, shopId, shopifyDomain}}),
-      registerWebhooks(shopify),
-      registerScriptTags(shopify)
+      registerWebhooks(shopify)
     ];
 
     await Promise.all(jobs);
