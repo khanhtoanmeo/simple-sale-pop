@@ -3,37 +3,34 @@ import {render} from 'preact';
 import React from 'preact/compat';
 import NotificationPopup from '../components/NotificationPopup/NotificationPopup';
 import delay from '../helpers/delay';
-import {getUrlsArray} from '../helpers/getUrlsArray';
+import {getUrlsArray, isUrlIncludedInArray} from '../helpers/processUrl';
 import {SPECIFIC} from '../const/triggersSetting';
 
 export default class DisplayManager {
   constructor() {
     this.notifications = [];
     this.settings = {};
+    this.popupEl = null;
   }
   async initialize({notifications, settings}) {
     this.notifications = notifications;
     this.settings = settings;
-    this.insertContainer();
+    this.popupEl = this.insertContainer();
     await this.displayNotifications();
     this.delete();
   }
 
   fadeOut() {
-    const container = document.querySelector('#Avada-SP__Pop');
-    container.classList.remove('Avada-SP__Pop--Display');
-    container.classList.add('Avada-SP__Pop--Hide');
+    this.popupEl.classList.add('Avada-SP__Pop--Hide');
   }
 
   delete() {
-    document.querySelector('#Avada-SP__Pop').remove();
+    this.popupEl.remove();
   }
 
   display({notification}) {
     const {truncateProductName, hideTimeAgo, position} = this.settings;
-    const container = document.querySelector('#Avada-SP__Pop');
-    container.classList.add('Avada-SP__Pop--Display');
-    container.classList.remove('Avada-SP__Pop--Hide');
+    this.popupEl.classList.remove('Avada-SP__Pop--Hide');
 
     render(
       <NotificationPopup
@@ -42,7 +39,7 @@ export default class DisplayManager {
         hideTimeAgo={hideTimeAgo}
         position={position}
       />,
-      container
+      this.popupEl
     );
   }
 
@@ -56,23 +53,23 @@ export default class DisplayManager {
 
     return popupEl;
   }
-  async displayNotifications() {
-    const {
-      firstDelay,
-      popsInterval,
-      displayDuration,
-      maxPopsDisplay,
-      includedUrls,
-      excludedUrls,
-      allowShow
-    } = this.settings;
 
+  shouldDisplay() {
+    const {includedUrls, excludedUrls, allowShow} = this.settings;
     const includedUrlsArr = getUrlsArray(includedUrls);
     const excludedUrlsArr = getUrlsArray(excludedUrls);
-    const {href: currentUrl} = window.location;
+    const {href: url} = window.location;
 
-    if (allowShow === SPECIFIC && !includedUrlsArr.includes(currentUrl)) return;
-    if (excludedUrlsArr.includes(currentUrl)) return;
+    if (allowShow === SPECIFIC && !isUrlIncludedInArray({url, urlsArr: includedUrlsArr}))
+      return false;
+    if (isUrlIncludedInArray({url, urlsArr: excludedUrlsArr})) return false;
+
+    return true;
+  }
+
+  async displayNotifications() {
+    const {firstDelay, popsInterval, displayDuration, maxPopsDisplay} = this.settings;
+    if (!this.shouldDisplay()) return;
 
     await delay(firstDelay);
 

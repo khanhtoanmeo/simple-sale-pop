@@ -121,12 +121,12 @@
   visibility: hidden;
 }
 
-.Avada-SP__Pop--Hide {
-  display: none;
+#Avada-SP__Pop {
+  display: block;
 }
 
-.Avada-SP__Pop--Display {
-  display: block;
+.Avada-SP__Pop--Hide {
+  display: none !important;
 }
 
 .Avava-SP__Wrapper--BottomLeft {

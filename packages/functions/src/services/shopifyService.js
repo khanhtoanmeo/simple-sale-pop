@@ -3,6 +3,8 @@ import appConfig from '@functions/config/app';
 import {prepareNotificationGraphQL} from '../helpers/prepareNotification';
 import {createNotification} from '../repositories/notificationsRepository';
 
+const BASE_URL = `https://${appConfig.baseUrl}`;
+
 const queryStr = `{
   orders(first:30,sortKey:CREATED_AT,reverse:true) {
     edges {
@@ -32,7 +34,6 @@ const queryStr = `{
 }`;
 
 export async function registerWebhooks(shopify) {
-  const baseUrl = `https://${appConfig.baseUrl}`;
   const webhooks = [
     {
       path: `/webhook/order/new`,
@@ -43,7 +44,7 @@ export async function registerWebhooks(shopify) {
   return await Promise.all(
     webhooks.map(({path, topic}) =>
       shopify.webhook.create({
-        address: baseUrl + path,
+        address: BASE_URL + path,
         topic
       })
     )
@@ -51,15 +52,12 @@ export async function registerWebhooks(shopify) {
 }
 
 export async function registerScriptTags(shopify) {
-  //todo: viết baseUrl dang const BASE_URL = '...' và viết ở trên đầu 
-  // liệu base url của srcipt tag có dùng chung đc với webhook không ? 
-  const baseUrl = 'https://localhost:3000';
   const scriptTags = [{path: '/scripttag/avada-sale-pop.min.js', event: 'onload'}];
 
   return await Promise.all(
     scriptTags.map(({path, event}) =>
       shopify.scriptTag.create({
-        src: baseUrl + path,
+        src: BASE_URL + path,
         event
       })
     )
