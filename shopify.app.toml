@@ -2,7 +2,7 @@
 
 name = "simple-sale-pop"
 client_id = "24a421f937a5885c7243456254b87999"
-application_url = "https://new-wall-km-youth.trycloudflare.com/auth/shopify"
+application_url = "https://gains-latinas-dos-semi.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://new-wall-km-youth.trycloudflare.com/auth/shopify/callback",
-  "https://new-wall-km-youth.trycloudflare.com/authSa/shopify/callback",
-  "https://new-wall-km-youth.trycloudflare.com/auth/shopify/embed/callback",
+  "https://gains-latinas-dos-semi.trycloudflare.com/auth/shopify/callback",
+  "https://gains-latinas-dos-semi.trycloudflare.com/authSa/shopify/callback",
+  "https://gains-latinas-dos-semi.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"
@@ -27,4 +27,4 @@ embedded = false
 
 [build]
 automatically_update_urls_on_dev = true
-dev_store_url = "toanyasuo.myshopify.com"
+dev_store_url = "quickstart-5f97f56f.myshopify.com"

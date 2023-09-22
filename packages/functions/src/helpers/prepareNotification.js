@@ -1,14 +1,17 @@
+import {removeProductIdPrefix} from './removeProductIdPrefix';
+
 export function prepareNotificationGraphQL({node, shopId, shopifyDomain}) {
   const {createdAt, billingAddress, lineItems = {}} = node;
   const {firstName, city, country} = billingAddress || {};
   const {id, title, featuredImage} = lineItems.edges[0]?.node?.product || {};
+
   return {
     firstName,
     city,
     country,
-    productId: id,
+    productId: removeProductIdPrefix(id),
     productName: title,
-    productImage: featuredImage.url,
+    productImage: featuredImage?.url,
     timestamp: new Date(createdAt),
     shopId,
     shopifyDomain
@@ -31,7 +34,7 @@ export async function prepareNotificationRestful({shopify, order}) {
     city,
     country,
     firstName,
-    productId: 'gid://shopify/Product/' + productId,
+    productId: productId,
     productImage,
     productName,
     timestamp: new Date(timestamp)

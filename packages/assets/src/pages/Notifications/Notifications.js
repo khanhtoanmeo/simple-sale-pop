@@ -18,11 +18,12 @@ import moment from 'moment';
 
 export default function Notifications() {
   const [selectedItems, setSelectedItems] = useState([]);
-  const {loading, data, pageInfo, nextPage, prevPage, count} = usePaginate({
+  const {loading, data, pageInfo, nextPage, prevPage, count, onQueryChange} = usePaginate({
     url: '/notifications',
     defaultLimit: 6,
     defaultSort: 'timestamp:desc'
   });
+  const [sortValue, setSortValue] = useState('timestamp:desc');
 
   const emptyStateMarkup = (
     <Card>
@@ -37,7 +38,15 @@ export default function Notifications() {
     <ResourceList
       emptyState={emptyStateMarkup}
       resourceName={{singular: 'notification', plural: 'notifications'}}
-      sortOptions={[{label: 'Newest update'}]}
+      sortOptions={[
+        {label: 'Newest update', value: 'timestamp:desc'},
+        {label: 'Oldest update', value: 'timestamp:asc'}
+      ]}
+      sortValue={sortValue}
+      onSortChange={value => {
+        setSortValue(value);
+        onQueryChange('sort', value, true);
+      }}
       items={data}
       totalItemsCount={count}
       renderItem={data => {

@@ -1,6 +1,7 @@
 import {Firestore} from '@google-cloud/firestore';
 import presentDoc from '../presenters/documentPresenter';
 import {presentNotification} from '../presenters/notificationPresenter';
+import cleanEmptyField from '@functions/helpers/utils/cleanEmptyField';
 
 const firestore = new Firestore();
 const collection = firestore.collection('notifications');
@@ -45,7 +46,8 @@ export async function getNotifications({shopifyDomain, limit = 80, sort = 'times
 }
 
 export async function createNotification(notification) {
-  return await collection.add(notification);
+  if (!notification) return;
+  return await collection.add(cleanEmptyField(notification));
 }
 
 export async function deleteNotifications(shopId) {

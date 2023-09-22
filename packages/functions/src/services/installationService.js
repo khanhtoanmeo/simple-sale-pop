@@ -8,6 +8,7 @@ export async function installService(ctx) {
   try {
     const {shop: shopifyDomain, accessToken} = ctx.state.shopify;
     const {id: shopId} = await getShopByShopifyDomain(shopifyDomain);
+
     const shopify = initShopify({accessToken, shopifyDomain});
     const jobs = [
       syncOrdersToNotifications({shopify, shopId, shopifyDomain}),

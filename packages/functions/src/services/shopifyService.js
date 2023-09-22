@@ -1,7 +1,7 @@
 import Shopify from 'shopify-api-node';
 import appConfig from '@functions/config/app';
 import {prepareNotificationGraphQL} from '../helpers/prepareNotification';
-import {createNotification} from '../repositories/notificationsRepository';
+import {createNotification} from '@functions/repositories/notificationsRepository';
 
 const BASE_URL = `https://${appConfig.baseUrl}`;
 
